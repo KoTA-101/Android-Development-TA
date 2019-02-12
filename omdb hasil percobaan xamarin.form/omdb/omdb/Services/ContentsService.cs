@@ -16,8 +16,6 @@ namespace omdb.Services
     {
         private readonly HttpClient _httpClient;
 
-        
-
         public ContentsService()
         {
             _httpClient = new HttpClient();
