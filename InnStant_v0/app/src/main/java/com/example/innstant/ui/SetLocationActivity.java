@@ -7,21 +7,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.innstant.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.tomtom.online.sdk.map.MapFragment;
+import com.tomtom.online.sdk.map.OnMapReadyCallback;
+import com.tomtom.online.sdk.map.TomtomMap;
+import com.tomtom.online.sdk.map.model.MapTilesType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SetLocationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class SetLocationActivity extends FragmentActivity {
 
     @BindView(R.id.setloc)
     Button setloc;
@@ -32,25 +31,35 @@ public class SetLocationActivity extends FragmentActivity implements OnMapReadyC
     @BindView(R.id.nextinput)
     Button nextinput;
 
+    private TomtomMap tomtomMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_location);
         ButterKnife.bind(this);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+            mapFragment.getAsyncMap(onMapReadyCallback);
         }
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        tomtomMap.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    private final OnMapReadyCallback onMapReadyCallback =
+            new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(TomtomMap map) {
+                    //Map is ready here
+                    tomtomMap = map;
+                    tomtomMap.getUiSettings().setMapTilesType(MapTilesType.VECTOR);
+                    tomtomMap.setMyLocationEnabled(true);
+                }
+            };
 
     @OnClick({R.id.setloc, R.id.nextinput})
     public void onViewClicked(View view) {
