@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,9 +27,9 @@ public class DashboardActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rent)
-    ImageButton rent;
+    ImageView rent;
     @BindView(R.id.hosting)
-    ImageButton hosting;
+    ImageView hosting;
     @BindView(R.id.nav_view)
     NavigationView navView;
     @BindView(R.id.drawer_layout)

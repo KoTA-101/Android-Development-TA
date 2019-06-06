@@ -26,11 +26,11 @@
         -->
         <meta-data
             android:name="OnlineMaps.Key"
-            android:value="@string/tomtom_api_key" />
+            android:value="@string/online_maps_key" />
 
         <meta-data
             android:name="OnlineSearch.Key"
-            android:value="@string/tomtom_api_key" />
+            android:value="@string/online_search_key" />
 
         <activity
             android:name=".ui.SetLocationActivity"
