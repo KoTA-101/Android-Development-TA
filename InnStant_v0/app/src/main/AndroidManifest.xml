@@ -15,7 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SetAvaliabilityActivity"></activity>
+        <activity android:name=".ui.RentStatus.ReservedActivity"></activity>
+        <activity android:name=".ui.RentStatus.idleActivity" />
+        <activity android:name=".ui.RoomListed.RoomDetailActivity" />
+        <activity android:name=".ui.RoomListed.ListedRoomActivity" />
+        <activity android:name=".ui.SetAvaliabilityActivity" />
         <activity android:name=".ui.GeneralDescriptionActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
