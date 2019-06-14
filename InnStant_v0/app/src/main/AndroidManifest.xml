@@ -15,7 +15,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.RentStatus.ReservedActivity"></activity>
+        <activity android:name=".ui.Rent.ApprovalActivity"></activity>
+        <activity android:name=".ui.Rent.SelectDateActivity" />
+        <activity android:name=".ui.Rent.RoomDetailActivity" />
+        <activity android:name=".ui.Rent.SetFIlterActivity" />
+        <activity android:name=".ui.Rent.SearchDetailActivity" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".ui.Rent.FindingNearbyRoomsActivity"
+            android:label="@string/title_activity_finding_nearby_rooms" />
+        <activity
+            android:name=".ui.Rent.RentRoomActivity"
+            android:label="@string/title_activity_rent_room"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.BookingApprovalActivity" />
+        <activity android:name=".ui.RentStatus.ReservedActivity" />
         <activity android:name=".ui.RentStatus.idleActivity" />
         <activity android:name=".ui.RoomListed.RoomDetailActivity" />
         <activity android:name=".ui.RoomListed.ListedRoomActivity" />
