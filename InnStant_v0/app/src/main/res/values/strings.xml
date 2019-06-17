@@ -17,4 +17,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_finding_nearby_rooms">Map</string>
+    <string name="title_activity_dashboard_message">DashboardMessageActivity</string>
+    <string name="tab_text_1">Book Orders</string>
+    <string name="tab_text_2">System Notifications</string>
 </resources>

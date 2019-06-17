@@ -15,7 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Rent.ApprovalActivity"></activity>
+        <activity
+            android:name=".ui.Dashboard.DashboardMessageActivity"
+            android:label="@string/title_activity_dashboard_message"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.Dashboard.DashboardNotificationActivity"
+            android:label="@string/title_activity_dashboard_message"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.Rent.ApprovalActivity" />
         <activity android:name=".ui.Rent.SelectDateActivity" />
         <activity android:name=".ui.Rent.RoomDetailActivity" />
         <activity android:name=".ui.Rent.SetFIlterActivity" />

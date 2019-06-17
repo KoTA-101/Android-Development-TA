@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,6 +14,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.innstant.R;
+import com.example.innstant.ui.Dashboard.DashboardMessageActivity;
+import com.example.innstant.ui.Dashboard.DashboardNotificationActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import butterknife.BindView;
@@ -72,9 +73,13 @@ public class DashboardActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.notify) {
+            Intent intent = new Intent(DashboardActivity.this, DashboardNotificationActivity.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.message) {
+            Intent intent = new Intent(DashboardActivity.this, DashboardMessageActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
