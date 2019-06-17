@@ -6,11 +6,13 @@
         android:id="@+id/message"
         android:icon="@mipmap/message"
         android:title="Message"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom"
+        />
     <item
         android:id="@+id/notify"
         android:icon="@mipmap/notifications"
         android:title="Notify"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom"
+      />
 
 </menu>

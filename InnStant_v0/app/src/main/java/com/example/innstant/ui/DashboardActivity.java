@@ -46,6 +46,7 @@ public class DashboardActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -64,6 +65,7 @@ public class DashboardActivity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -75,12 +77,10 @@ public class DashboardActivity extends AppCompatActivity
         if (id == R.id.notify) {
             Intent intent = new Intent(DashboardActivity.this, DashboardNotificationActivity.class);
             startActivity(intent);
-            return true;
         }
         if (id == R.id.message) {
             Intent intent = new Intent(DashboardActivity.this, DashboardMessageActivity.class);
             startActivity(intent);
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
