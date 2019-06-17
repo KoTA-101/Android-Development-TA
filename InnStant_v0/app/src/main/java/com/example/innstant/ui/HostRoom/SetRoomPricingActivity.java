@@ -1,4 +1,4 @@
-package com.example.innstant.ui;
+package com.example.innstant.ui.HostRoom;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ public class SetRoomPricingActivity extends AppCompatActivity {
         setAvaliablity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SetRoomPricingActivity.this,SetAvaliabilityActivity.class);
+                Intent intent = new Intent(SetRoomPricingActivity.this, SetAvaliabilityActivity.class);
                 startActivity(intent);
             }
         });

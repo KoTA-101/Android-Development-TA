@@ -39,13 +39,13 @@
             android:name=".ui.Rent.RentRoomActivity"
             android:label="@string/title_activity_rent_room"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.BookingApprovalActivity" />
+        <activity android:name=".ui.HostRoom.BookingApprovalActivity" />
         <activity android:name=".ui.RentStatus.ReservedActivity" />
         <activity android:name=".ui.RentStatus.idleActivity" />
         <activity android:name=".ui.RoomListed.RoomDetailActivity" />
         <activity android:name=".ui.RoomListed.ListedRoomActivity" />
-        <activity android:name=".ui.SetAvaliabilityActivity" />
-        <activity android:name=".ui.GeneralDescriptionActivity" />
+        <activity android:name=".ui.HostRoom.SetAvaliabilityActivity" />
+        <activity android:name=".ui.HostRoom.GeneralDescriptionActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

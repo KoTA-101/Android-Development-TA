@@ -1,4 +1,4 @@
-package com.example.innstant.ui;
+package com.example.innstant.ui.HostRoom;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,19 +9,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.innstant.R;
 
-public class GeneralDescriptionActivity extends AppCompatActivity {
+public class AddPictureActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_general_description);
+        setContentView(R.layout.activity_add_picture);
 
-        Button nextPict = (Button) findViewById(R.id.nextaddpict);
+        Button nextPict = (Button) findViewById(R.id.nextsetpricing);
 
         nextPict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(GeneralDescriptionActivity.this,AddPictureActivity.class);
+                Intent intent =new Intent(AddPictureActivity.this, AddPictureActivity.class);
                 startActivity(intent);
             }
         });
