@@ -46,7 +46,7 @@ public class DashboardActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar); 
     }
 
     @Override
