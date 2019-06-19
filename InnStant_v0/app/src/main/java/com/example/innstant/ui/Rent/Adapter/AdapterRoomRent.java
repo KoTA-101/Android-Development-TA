@@ -17,6 +17,7 @@ import com.example.innstant.ui.Rent.Model.ModelRent;
 import com.example.innstant.ui.Rent.RentRoomActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdapterRoomRent extends RecyclerView.Adapter<AdapterRoomRent.MyViewHolder> {
     Context context;
@@ -75,8 +76,8 @@ public class AdapterRoomRent extends RecyclerView.Adapter<AdapterRoomRent.MyView
             namaKamar.setText(item.getNamaKamar());
             status.setText(item.getStatus());
             lokasi.setText(item.getLocation());
-            awal.setText(item.getAwal().get2DigitYearStart().toString());
-            akhir.setText(item.getAkhir());
+            awal.setText(item.getAwal().toLocalizedPattern());
+            akhir.setText(item.getAkhir().format(new Date()));
             namaPenyewa.setText(item.getNamaKamar());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
