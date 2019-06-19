@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.innstant.R;
+import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
+import com.example.innstant.ui.HostRoom.Model.ModelHost;
+import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
+import com.example.innstant.ui.Rent.Model.ModelRent;
 import com.example.innstant.ui.RoomHostingActivity;
 import com.example.innstant.ui.SetLocationActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,14 +26,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import butterknife.OnClick;
 
 public class RentRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    RecyclerView recyclerView;
+    AdapterRoomRent adapter;
+    ArrayList<ModelRent> list;
+    RecyclerView.LayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +57,23 @@ public class RentRoomActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        list = new ArrayList<>();
+        recyclerView = findViewById(R.id.rentRoom);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        ModelRent p = new ModelRent();
+        p.setNamaKamar("kamar azah");
+        p.setStatus("gratisan");
+        p.setAwal(new SimpleDateFormat("2018-10-18"));
+        p.setAkhir(new SimpleDateFormat("2019-10-18"));
+        p.setDistance((float) 10.2);
+        p.setLocation("cinunuk");
+        list.add(p);
+        adapter = new AdapterRoomRent(RentRoomActivity.this,list, RentRoomActivity.this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

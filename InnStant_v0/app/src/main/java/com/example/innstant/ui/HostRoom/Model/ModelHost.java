@@ -1,4 +1,4 @@
-package com.example.innstant.ui.HostRoom.Class;
+package com.example.innstant.ui.HostRoom.Model;
 
 import android.graphics.Bitmap;
 

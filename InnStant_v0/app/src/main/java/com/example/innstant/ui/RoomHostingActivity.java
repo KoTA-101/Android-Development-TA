@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -18,8 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.innstant.R;
-import com.example.innstant.ui.HostRoom.Class.ModelHost;
-import com.example.innstant.ui.HostRoom.adapter.AdapterRoomHosting;
+import com.example.innstant.ui.HostRoom.Model.ModelHost;
+import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
+import com.example.innstant.ui.Rent.Model.ModelRent;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -63,7 +63,6 @@ public class RoomHostingActivity extends AppCompatActivity
         navView.setNavigationItemSelectedListener(this);
 
         list = new ArrayList<>();
-
         recyclerView = findViewById(R.id.dataroom);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         layoutManager = new LinearLayoutManager(this);

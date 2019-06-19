@@ -1,10 +1,9 @@
-package com.example.innstant.ui.HostRoom.adapter;
+package com.example.innstant.ui.HostRoom.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.innstant.R;
-import com.example.innstant.ui.HostRoom.Class.ModelHost;
+import com.example.innstant.ui.HostRoom.Model.ModelHost;
+import com.example.innstant.ui.Rent.Model.ModelRent;
 
 import java.util.ArrayList;
 
