@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.innstant.R;
 import com.example.innstant.ui.Dashboard.DashboardMessageActivity;
 import com.example.innstant.ui.Dashboard.DashboardNotificationActivity;
+import com.example.innstant.ui.Rent.RentRoomActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import butterknife.BindView;
@@ -111,11 +112,14 @@ public class DashboardActivity extends AppCompatActivity
 
     @OnClick({R.id.rent, R.id.hosting})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.rent:
+                intent   = new Intent(DashboardActivity.this, RentRoomActivity.class);
+                startActivity(intent);
                 break;
             case R.id.hosting:
-                Intent intent = new Intent(DashboardActivity.this, RoomHostingActivity.class);
+                intent = new Intent(DashboardActivity.this, RoomHostingActivity.class);
                 startActivity(intent);
                 break;
         }

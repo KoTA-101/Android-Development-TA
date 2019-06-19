@@ -14,17 +14,27 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.innstant.R;
+import com.example.innstant.ui.HostRoom.Class.ModelHost;
+import com.example.innstant.ui.HostRoom.adapter.AdapterRoomHosting;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RoomHostingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterRoomHosting.OnItemClickListener {
+
+    RecyclerView recyclerView;
+    AdapterRoomHosting adapter;
+    ArrayList<ModelHost> list;
+    RecyclerView.LayoutManager layoutManager;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -51,6 +61,22 @@ public class RoomHostingActivity extends AppCompatActivity
         toggle.syncState();
 
         navView.setNavigationItemSelectedListener(this);
+
+        list = new ArrayList<>();
+
+        recyclerView = findViewById(R.id.dataroom);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        ModelHost p = new ModelHost();
+        p.setNamaKamar("kamar azah");
+        p.setRating((float) 3.25);
+        p.setStatus("gratisan");
+        p.setTotalRating(299);
+        list.add(p);
+        adapter = new AdapterRoomHosting(RoomHostingActivity.this,list, RoomHostingActivity.this);
+        recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -116,5 +142,10 @@ public class RoomHostingActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(ModelHost item) {
+
     }
 }
