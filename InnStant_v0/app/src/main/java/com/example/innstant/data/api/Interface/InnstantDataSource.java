@@ -1,4 +1,4 @@
 package com.example.innstant.data.api.Interface;
 
-public class IinnstantDataSource {
+public class InnstantDataSource {
 }

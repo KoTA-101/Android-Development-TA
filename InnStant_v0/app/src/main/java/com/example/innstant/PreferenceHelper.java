@@ -1,14 +1,9 @@
 package com.example.innstant;
 
 public class PreferenceHelper {
-    private static final String BASE_URL = "";
-    private static final String IMAGE_URL = "";
+    private static final String BASE_URL = "https://127.0.0.1:9029";
 
     public static String getBaseUrl() {
         return BASE_URL;
-    }
-
-    public static String getImageUrl() {
-        return IMAGE_URL;
     }
 }

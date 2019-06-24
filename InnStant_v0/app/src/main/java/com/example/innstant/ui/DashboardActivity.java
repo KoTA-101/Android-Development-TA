@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,26 +21,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.innstant.PreferenceHelper;
 import com.example.innstant.R;
-import com.example.innstant.data.model.comment;
 import com.example.innstant.ui.Dashboard.DashboardMessageActivity;
 import com.example.innstant.ui.Dashboard.DashboardNotificationActivity;
 import com.example.innstant.ui.Rent.RentRoomActivity;
+import com.example.innstant.viewmodel.DashboardViewModel;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rent)
@@ -51,50 +45,31 @@ public class DashboardActivity extends AppCompatActivity
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+    private DashboardViewModel mViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
         setSupportActionBar(toolbar);
-
-        TestAPI();
+        testAPI();
     }
 
-    public void TestAPI(){
-        // Instantiate the RequestQueue.
+    private void testAPI() {
+        mViewModel.openServerConnection();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://my-json-server.typicode.com/typicode/demo/comments";
-        Gson gson = new GsonBuilder().create();
-
-// Request a string response from the provided URL.
+        String url = PreferenceHelper.getBaseUrl() + "/users";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        Toast.makeText( DashboardActivity.this,"Response is: "+ response,Toast.LENGTH_LONG).show();
-                        ArrayList<comment> coment = gson.fromJson(response, new TypeToken<List<comment>>(){}.getType());
-                       Toast.makeText( DashboardActivity.this,coment.get(0).getBody(),Toast.LENGTH_LONG).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText( DashboardActivity.this, error.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
-
-// Add the request to the RequestQueue.
+                response -> Toast.makeText(DashboardActivity.this, "Users: " + response, Toast.LENGTH_LONG).show(),
+                error -> Toast.makeText(DashboardActivity.this, error.getMessage(), Toast.LENGTH_LONG).show());
         queue.add(stringRequest);
-
-
     }
-
 
     @Override
     public void onBackPressed() {
@@ -161,7 +136,7 @@ public class DashboardActivity extends AppCompatActivity
         Intent intent;
         switch (view.getId()) {
             case R.id.rent:
-                intent   = new Intent(DashboardActivity.this, RentRoomActivity.class);
+                intent = new Intent(DashboardActivity.this, RentRoomActivity.class);
                 startActivity(intent);
                 break;
             case R.id.hosting:
