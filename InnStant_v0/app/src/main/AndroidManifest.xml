@@ -17,15 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.Auth.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ui.Auth.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.login.SignupActivity"
             android:label="@string/title_activity_signup" />
-        <activity
-            android:name=".ui.Auth.LoginActivity"
-            android:label="@string/title_activity_login" />
         <activity
             android:name=".ui.Dashboard.DashboardMessageActivity"
             android:label="@string/title_activity_dashboard_message"

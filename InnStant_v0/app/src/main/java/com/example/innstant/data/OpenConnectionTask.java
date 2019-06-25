@@ -2,8 +2,6 @@ package com.example.innstant.data;
 
 import android.os.AsyncTask;
 
-import com.example.innstant.PreferenceHelper;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

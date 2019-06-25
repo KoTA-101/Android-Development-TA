@@ -1,6 +1,6 @@
 package com.example.innstant.data.api;
 
-import com.example.innstant.PreferenceHelper;
+import com.example.innstant.data.PreferenceHelper;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
