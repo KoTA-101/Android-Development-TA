@@ -67,12 +67,13 @@
                 android:text="Phone Number"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content" />
+
             <EditText
-                android:layout_marginTop="10dp"
                 android:id="@+id/phoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"/>
+                android:layout_marginTop="10dp"
+                android:inputType="number" />
             <TextView
                 android:layout_marginTop="10dp"
                 android:text="Password"
@@ -82,7 +83,20 @@
                 android:layout_marginTop="10dp"
                 android:id="@+id/password"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="Set PIN"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content" />
+            <EditText
+                android:layout_marginTop="10dp"
+                android:id="@+id/pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberPassword"
+                android:maxLength="5"/>
             <TextView
                 android:layout_marginTop="20dp"
                 android:text="Take a selfir"

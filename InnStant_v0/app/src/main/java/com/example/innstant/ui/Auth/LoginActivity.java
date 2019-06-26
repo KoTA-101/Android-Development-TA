@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
+import com.example.innstant.ui.DashboardActivity;
 import com.example.innstant.viewmodel.LoginViewModel;
 
 import butterknife.ButterKnife;
@@ -23,6 +25,9 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel mViewModel;
+
+    EditText username;
+    EditText password;
     Button login ;
     Button signUp;
     @Override
@@ -35,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         login =(Button) findViewById(R.id.login);
         signUp =(Button) findViewById(R.id.signup);
+        username =(EditText) findViewById(R.id.username);
+        password =(EditText) findViewById(R.id.password);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                username.getText().toString();
+                password.getText().toString();
                 Login();
             }
         });
@@ -59,5 +68,9 @@ public class LoginActivity extends AppCompatActivity {
                 response -> Toast.makeText(LoginActivity.this, "Users: " + response, Toast.LENGTH_LONG).show(),
                 error -> Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_LONG).show());
         queue.add(stringRequest);
+        if(true){
+            Intent intent= new Intent(LoginActivity.this, DashboardActivity.class);
+            startActivity(intent);
+        }
     }
 }
