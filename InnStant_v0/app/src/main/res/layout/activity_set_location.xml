@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <Button
         android:id="@+id/setloc"
         android:layout_width="match_parent"
@@ -42,4 +48,6 @@
         android:background="#707070"
         android:text="Next"
         android:textColor="#fff" />
+    </LinearLayout>
+</ScrollView>
 </LinearLayout>

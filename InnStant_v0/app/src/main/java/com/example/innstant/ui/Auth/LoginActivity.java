@@ -1,6 +1,7 @@
 package com.example.innstant.ui.Auth;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,35 +12,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
-import com.example.innstant.data.model.comment;
-import com.example.innstant.data.model.user2;
 import com.example.innstant.ui.DashboardActivity;
 import com.example.innstant.viewmodel.LoginViewModel;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel mViewModel;
+    private String baseUrl;
 
-    EditText username;
-    EditText password;
-    Button login ;
+    EditText editText_username;
+    EditText editText_password;
+    Button login;
     Button signUp;
+    private String username;
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +38,16 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        baseUrl = PreferenceHelper.getBaseUrl() + "/users/authenticate";
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        login =(Button) findViewById(R.id.login);
-        signUp =(Button) findViewById(R.id.signup);
-        username =(EditText) findViewById(R.id.username);
-        password =(EditText) findViewById(R.id.password);
+        login = (Button) findViewById(R.id.login);
+        signUp = (Button) findViewById(R.id.signup);
+        editText_username = (EditText) findViewById(R.id.username);
+        editText_password = (EditText) findViewById(R.id.password);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
@@ -63,42 +55,92 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
 
+                    username = editText_username.getText().toString();
+                    password = editText_password.getText().toString();
 
-                Login();
+                    AuthRequest.ApiAuthenticationClient apiAuthenticationClient =
+                            new AuthRequest.ApiAuthenticationClient(
+                                    baseUrl
+                                    , username
+                                    , password
+                            );
+
+                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(apiAuthenticationClient);
+                    execute.execute();
+                } catch (Exception ex) {
+                }
+                goToSecondActivity();
             }
         });
 
     }
 
+    /**
+     * This subclass handles the network operations in a new thread.
+     * It starts the progress bar, makes the API call, and ends the progress bar.
+     */
+    public class ExecuteNetworkOperation extends AsyncTask<Void, Void, String> {
 
-    public void Login(){
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/users";
-        Gson gson = new GsonBuilder().create();
+        private AuthRequest.ApiAuthenticationClient apiAuthenticationClient;
+        private String isValidCredentials;
 
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                       // ArrayList<comment> coment = gson.fromJson(response, new TypeToken<List<comment>>(){}.getType());
-                        Toast.makeText( LoginActivity.this,response,Toast.LENGTH_LONG).show();
-                       // Toast.makeText( LoginActivity.this,  username.getText().toString() + password.getText().toString(),Toast.LENGTH_LONG).show();
+        /**
+         * Overload the constructor to pass objects to this class.
+         */
+        public ExecuteNetworkOperation(AuthRequest.ApiAuthenticationClient apiAuthenticationClient) {
+            this.apiAuthenticationClient = apiAuthenticationClient;
+        }
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText( LoginActivity.this, error.getMessage(),Toast.LENGTH_LONG).show();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            // Display the progress bar.
+          //  findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                isValidCredentials = apiAuthenticationClient.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
 
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 
+            // Hide the progress bar.
+           // findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+            // Login Success
+            if (isValidCredentials.equals("true")) {
+                goToSecondActivity();
+            }
+            // Login Failure
+            else {
+                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    /**
+     * Open a new activity window.
+     */
+    private void goToSecondActivity() {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("password", password);
+        bundle.putString("baseUrl", baseUrl);
+
+        Intent intent = new Intent(this, DashboardActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

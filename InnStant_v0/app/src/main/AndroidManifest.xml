@@ -63,6 +63,8 @@
             android:label="@string/title_activity_rent_room"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.HostRoom.BookingApprovalActivity" />
+        <activity android:name=".ui.HostRoom.AddPictureActivity" />
+        <activity android:name=".ui.HostRoom.SetRoomPricingActivity" />
         <activity android:name=".ui.RentStatus.ReservedActivity" />
         <activity android:name=".ui.RentStatus.idleActivity" />
         <activity android:name=".ui.RoomListed.RoomDetailActivity" />
