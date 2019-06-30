@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
     @SerializedName("_id")
-    private String _id;
+    private _id _id;
 
     @SerializedName("first_name")
     private String firstName;

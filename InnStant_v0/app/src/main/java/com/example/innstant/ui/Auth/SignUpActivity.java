@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -96,6 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
         if(requestCode == 1){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             selfieImage.setImageBitmap(bitmap);
+
         }else if(requestCode == 2){
 
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
@@ -104,6 +106,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             idCardImage.setImageBitmap(bitmap);
+
         }
     }
 
@@ -148,13 +151,14 @@ public class SignUpActivity extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-
+                            Toast.makeText(SignUpActivity.this,"berhasil",Toast.LENGTH_LONG).show();
                         }
 
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(SignUpActivity.this,"gagal",Toast.LENGTH_LONG).show();
                         }
 
                     }

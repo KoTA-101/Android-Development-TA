@@ -56,7 +56,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
         setSupportActionBar(toolbar);
-        testAPI();
+        //testAPI();
     }
 
     private void testAPI() {

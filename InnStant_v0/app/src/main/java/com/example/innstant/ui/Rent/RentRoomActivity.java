@@ -2,43 +2,32 @@ package com.example.innstant.ui.Rent;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.example.innstant.R;
-import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
-import com.example.innstant.ui.HostRoom.Model.ModelHost;
-import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
-import com.example.innstant.ui.Rent.Model.ModelRent;
-import com.example.innstant.ui.RoomHostingActivity;
-import com.example.innstant.ui.SetLocationActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.view.View;
-
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Menu;
+import com.example.innstant.R;
+import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
+import com.example.innstant.ui.Rent.Model.ModelRent;
+import com.example.innstant.ui.RoomListed.ListedRoomActivity;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import butterknife.OnClick;
-
 public class RentRoomActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Button rent;
     RecyclerView recyclerView;
     AdapterRoomRent adapter;
     ArrayList<ModelRent> list;
@@ -64,6 +53,8 @@ public class RentRoomActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        rent =(Button) findViewById(R.id.addRent);
+
         ModelRent p = new ModelRent();
         p.setNamaKamar("kamar azah");
         p.setStatus("gratisan");
@@ -74,6 +65,14 @@ public class RentRoomActivity extends AppCompatActivity
         list.add(p);
         adapter = new AdapterRoomRent(RentRoomActivity.this,list, RentRoomActivity.this);
         recyclerView.setAdapter(adapter);
+
+        rent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RentRoomActivity.this, ListedRoomActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -133,13 +132,6 @@ public class RentRoomActivity extends AppCompatActivity
         return true;
     }
 
-    @OnClick({R.id.rentRoom})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rentRoom:
-                Intent intent = new Intent(RentRoomActivity.this, SetLocationActivity.class);
-                startActivity(intent);
-                break;
-        }
-    }
+
+
 }

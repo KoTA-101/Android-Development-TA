@@ -1,103 +1,39 @@
 package com.example.innstant.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Room {
+    @SerializedName("_id")
+     private _id _id;
+    @SerializedName("name")
      private String name;
+    @SerializedName("ownerId")
      private String ownerId;
+    @SerializedName("type")
      private String type;
+    @SerializedName("location")
      private String location;
+    @SerializedName("latitude")
      private Double latitude;
+    @SerializedName("longitude")
      private Double longitude;
-     private String[] amenities;
+    @SerializedName("amenities")
+     private List<String> amenities;
+    @SerializedName("description")
      private String description;
+    @SerializedName("price")
      private String price;
-     private Double dpPercentage;
-     private String photos;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String[] getAmenities() {
-        return amenities;
-    }
-
-    public void setAmenities(String[] amenities) {
-        this.amenities = amenities;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public Double getDpPercentage() {
-        return dpPercentage;
-    }
-
-    public void setDpPercentage(Double dpPercentage) {
-        this.dpPercentage = dpPercentage;
-    }
-
-    public String getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(String photos) {
-        this.photos = photos;
-    }
+    @SerializedName("dpPercentage")
+     private String dpPercentage;
+    @SerializedName("photo")
+     private List<String> photos;
 }

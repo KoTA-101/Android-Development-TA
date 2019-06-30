@@ -65,6 +65,7 @@ the price below (left blank to go with recommended price) "
                     android:gravity="right"
                     android:text=" Rp." />
                 <EditText
+                    android:id="@+id/price"
                     android:textColor="#fff"
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
@@ -96,6 +97,7 @@ the price below (left blank to go with recommended price) "
                 android:gravity="right">
 
                 <EditText
+                    android:id="@+id/fee"
                     android:textColor="#fff"
                     android:layout_width="188dp"
                     android:layout_height="wrap_content"
