@@ -151,14 +151,17 @@ public class SignUpActivity extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(SignUpActivity.this,"berhasil",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignUpActivity.this,response.toString(),Toast.LENGTH_LONG).show();
                         }
 
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(SignUpActivity.this,"gagal",Toast.LENGTH_LONG).show();
+                           // Toast.makeText(SignUpActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                            Intent intent =new Intent(SignUpActivity.this,LoginActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                     }
