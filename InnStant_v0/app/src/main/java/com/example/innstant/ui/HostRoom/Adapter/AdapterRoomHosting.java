@@ -51,7 +51,7 @@ public class AdapterRoomHosting  extends RecyclerView.Adapter<AdapterRoomHosting
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView gambarHost;
-        TextView namaKamar,status,rating,totalrating;
+        TextView namaKamar,status,rating,price;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,7 +59,7 @@ public class AdapterRoomHosting  extends RecyclerView.Adapter<AdapterRoomHosting
             namaKamar = itemView.findViewById(R.id.namaKamar);
             status = itemView.findViewById(R.id.statusKamar);
             rating = itemView.findViewById(R.id.rating);
-            totalrating = itemView.findViewById(R.id.totalRating);
+            price = itemView.findViewById(R.id.price);
         }
 
         public void bind(final ModelHost item, final OnItemClickListener listener) {
@@ -67,7 +67,7 @@ public class AdapterRoomHosting  extends RecyclerView.Adapter<AdapterRoomHosting
             namaKamar.setText(item.getNamaKamar());
             status.setText(item.getStatus());
             rating.setText(item.getRating().toString());
-            totalrating.setText(item.getTotalRating().toString());
+            price.setText(item.getTotalRating().toString());
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -22,6 +22,7 @@ import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
 import com.example.innstant.ui.RoomListed.ListedRoomActivity;
 import com.example.innstant.viewmodel.SetRoomPricingActivityViewModel;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -50,6 +51,7 @@ public class SetRoomPricingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(this).get(SetRoomPricingActivityViewModel.class);
 
+
         setAvaliablity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,29 +73,34 @@ public class SetRoomPricingActivity extends AppCompatActivity {
     public void postData()  {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/users/5d121218c6036b1253d1ce5b/rooms/5d15248c9c3f540fb79456e6";
-        Room room = new Room();
+        String url = PreferenceHelper.getBaseUrl() + "/users/5d1df999c6036b3087987f03/rooms";
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("dataRoom");
+        Gson gson = new Gson();
+        Room room= gson.fromJson(json,Room.class);
         room.setPrice(price.getText().toString());
         room.setDpPercentage(fee.getText().toString());
         String paramString = new GsonBuilder().create().toJson(room);
+        Toast.makeText(SetRoomPricingActivity.this,paramString,Toast.LENGTH_LONG).show();
         try {
             JSONObject param = new JSONObject(paramString);
 
-            JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.PUT, url,param,
+            JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.PATCH, url,param,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(SetRoomPricingActivity.this,"berhasil",Toast.LENGTH_LONG).show();
+//                            Toast.makeText(SetRoomPricingActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
                         }
 
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(SetRoomPricingActivity.this,"gagal",Toast.LENGTH_LONG).show();
+//                            Toast.makeText(SetRoomPricingActivity.this,"gagal     :"+error,Toast.LENGTH_LONG).show();
                         }
 
                     }
+
             ){
                 //here I want to post data to sever
                 @Override
@@ -101,9 +108,8 @@ public class SetRoomPricingActivity extends AppCompatActivity {
                     Map<String, String> headers = new HashMap<>();
                     // Basic Authentication
                     //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
-
-                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
-                return headers;
+//                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+                    return headers;
                 }
             };
             requstQueue.add(jsonobj);

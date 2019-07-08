@@ -40,6 +40,7 @@
             android:text="Kamar 1"
             android:textSize="14dp"
             android:textColor="#fff"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,29 +63,47 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/locationRoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Garut"
+                android:textSize="14dp"
+                android:textColor="#fff"/>
             <Button
                 android:id="@+id/viewRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View Request"/>
             <LinearLayout
+                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="bottom">
-              <RatingBar
+            <!--  <RatingBar
                   android:layout_width="100dp"
                   android:layout_height="wrap_content" />
+               -->
+                <TextView
+                    android:layout_marginRight="30dp"
+                    android:id="@+id/typeKamar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kost "></TextView>
+
                 <TextView
                     android:id="@+id/rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3.5 / 5 "></TextView>
                 <TextView
-                    android:id="@+id/totalRating"
+                    android:layout_marginLeft="30dp"
+                    android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="out of 254 guest"></TextView>
+                    android:text="2.000.0000"></TextView>
 
             </LinearLayout>
         </LinearLayout>

@@ -22,6 +22,7 @@ import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
 import com.example.innstant.viewmodel.HostViewModel;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -60,6 +61,9 @@ public class GeneralDescriptionActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(GeneralDescriptionActivity.this).get(HostViewModel.class);
 
+        Bundle bundle = getIntent().getExtras();
+        String loc = bundle.getString("location");
+//        Toast.makeText(GeneralDescriptionActivity.this,loc,Toast.LENGTH_LONG).show();
         location =(EditText) findViewById(R.id.location);
         roomName =(EditText) findViewById(R.id.roomName);
         roomType = (EditText) findViewById(R.id.roomType);
@@ -71,22 +75,20 @@ public class GeneralDescriptionActivity extends AppCompatActivity {
         Editext_parking=(CheckBox) findViewById(R.id.parking);
         Editext_security=(CheckBox) findViewById(R.id.security);
 
+        location.setText(loc);
         next = (Button) findViewById(R.id.nextaddpict);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postData();
-                Intent intent =new Intent(GeneralDescriptionActivity.this, AddPictureActivity.class);
-                startActivity(intent);
+
             }
         });
     }
 
     private void postData() {
         mViewModel.openServerConnection();
-        RequestQueue requstQueue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/users/5d121218c6036b1253d1ce5b/rooms";
         Room room = new Room();
         room.setName(roomName.getText().toString());
         room.setLocation(location.getText().toString());
@@ -132,8 +134,13 @@ public class GeneralDescriptionActivity extends AppCompatActivity {
         ameni.add(security);
 
         room.setAmenities(ameni);
-        String paramString = new GsonBuilder().create().toJson(room);
-        try {
+        Gson gson = new Gson();
+        String paramString = gson.toJson(room);
+        Intent intent =new Intent(GeneralDescriptionActivity.this, AddPictureActivity.class);
+        intent.putExtra("dataRoom",paramString);
+        startActivity(intent);
+//        Toast.makeText(GeneralDescriptionActivity.this,paramString,Toast.LENGTH_LONG).show();
+        /*  try {
             JSONObject param = new JSONObject(paramString);
 
             JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.PATCH, url,param,
@@ -160,14 +167,14 @@ public class GeneralDescriptionActivity extends AppCompatActivity {
                     // Basic Authentication
                     //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
 
-                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+//                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
                     return headers;
                 }
             };
             requstQueue.add(jsonobj);
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 

@@ -43,6 +43,8 @@ public class SetLocationActivity extends FragmentActivity {
         if (mapFragment != null) {
             mapFragment.getAsyncMap(onMapReadyCallback);
         }
+
+
     }
 
     @Override
@@ -69,6 +71,9 @@ public class SetLocationActivity extends FragmentActivity {
                 break;
             case R.id.nextinput:
                 Intent intent = new Intent(SetLocationActivity.this, GeneralDescriptionActivity.class);
+                location = (EditText) findViewById(R.id.location);
+                String loc = location.getText().toString();
+                intent.putExtra("location",loc);
                 startActivity(intent);
                 break;
         }

@@ -70,6 +70,7 @@ the price below (left blank to go with recommended price) "
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
+                    android:inputType="number"
                     android:alpha="0.8"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -102,6 +103,8 @@ the price below (left blank to go with recommended price) "
                     android:layout_width="188dp"
                     android:layout_height="wrap_content"
                     android:alpha="0.8"
+                    android:inputType="number"
+                    android:maxLength="2"
                     android:background="@color/colorPrimary" />
                 <TextView
                     android:layout_width="wrap_content"

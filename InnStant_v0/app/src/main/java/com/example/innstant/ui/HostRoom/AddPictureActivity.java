@@ -7,10 +7,18 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.innstant.R;
+import com.example.innstant.data.model.Room;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 
 public class AddPictureActivity extends AppCompatActivity {
     Button nextPict;
@@ -24,6 +32,15 @@ public class AddPictureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_picture);
+
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("dataRoom");
+        Gson gson = new Gson();
+        final Room room= gson.fromJson(json,Room.class);
+
+
+
+//        Toast.makeText(AddPictureActivity.this,room.getName(),Toast.LENGTH_LONG).show();
 
         nextPict = (Button) findViewById(R.id.nextsetpricing);
         gambar1 =(ImageView) findViewById(R.id.gambar1);
@@ -44,6 +61,9 @@ public class AddPictureActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(AddPictureActivity.this, SetRoomPricingActivity.class);
+                Gson gson= new Gson();
+                String json = gson.toJson(room);
+                intent.putExtra("dataRoom",json);
                 startActivity(intent);
             }
         });
