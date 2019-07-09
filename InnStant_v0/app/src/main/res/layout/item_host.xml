@@ -35,7 +35,7 @@
             android:orientation="horizontal">
         <TextView
             android:id="@+id/namaKamar"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Kamar 1"
             android:textSize="14dp"
@@ -64,20 +64,21 @@
             android:gravity="center"
             android:orientation="vertical">
             <TextView
-                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:id="@+id/locationRoom"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Garut"
                 android:textSize="14dp"
                 android:textColor="#fff"/>
             <Button
+                android:layout_marginTop="10dp"
                 android:id="@+id/viewRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View Request"/>
             <LinearLayout
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -89,19 +90,19 @@
                 <TextView
                     android:layout_marginRight="30dp"
                     android:id="@+id/typeKamar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="kost "></TextView>
 
                 <TextView
                     android:id="@+id/rating"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="3.5 / 5 "></TextView>
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:id="@+id/price"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="2.000.0000"></TextView>
 
