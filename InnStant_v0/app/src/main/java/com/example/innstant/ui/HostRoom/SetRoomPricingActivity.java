@@ -79,9 +79,9 @@ public class SetRoomPricingActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Room room= gson.fromJson(json,Room.class);
         room.setPrice(price.getText().toString());
-        room.setDpPercentage(fee.getText().toString());
+        room.setDpPercentage(Integer.parseInt(String.valueOf(fee.getText())));
         String paramString = new GsonBuilder().create().toJson(room);
-        Toast.makeText(SetRoomPricingActivity.this,paramString,Toast.LENGTH_LONG).show();
+//        Toast.makeText(SetRoomPricingActivity.this,paramString,Toast.LENGTH_LONG).show();
         try {
             JSONObject param = new JSONObject(paramString);
 
@@ -89,7 +89,7 @@ public class SetRoomPricingActivity extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-//                            Toast.makeText(SetRoomPricingActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+                              Toast.makeText(SetRoomPricingActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
                         }
 
                     },

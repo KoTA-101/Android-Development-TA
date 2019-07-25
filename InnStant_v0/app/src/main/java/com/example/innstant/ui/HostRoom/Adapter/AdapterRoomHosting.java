@@ -11,38 +11,38 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.innstant.R;
+import com.example.innstant.data.model.Room;
+import com.example.innstant.data.model.Transaction;
 import com.example.innstant.ui.HostRoom.Model.ModelHost;
-import com.example.innstant.ui.Rent.Model.ModelRent;
 
 import java.util.ArrayList;
 
 public class AdapterRoomHosting  extends RecyclerView.Adapter<AdapterRoomHosting.MyViewHolder> {
     Context context;
-    ArrayList<ModelHost> Mhost;
-    OnItemClickListener listener;
+    ArrayList<Room> Mhost;
+    AdapterRoomHosting.OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(ModelHost item);
+        void onItemClick(Room item);
     }
-    public AdapterRoomHosting(Context context, ArrayList<ModelHost> pencarian, OnItemClickListener listener) {
+
+    public AdapterRoomHosting(Context context, ArrayList<Room> pencarian, AdapterRoomHosting.OnItemClickListener listener) {
         this.context = context;
         Mhost = pencarian;
-//        this.listener = (AdapterView.OnItemClickListener) listener;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_host, viewGroup, false);
-        return new MyViewHolder(v);
+    public AdapterRoomHosting.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_host, parent, false);
+        return new AdapterRoomHosting.MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.bind(Mhost.get(i), listener);
+    public void onBindViewHolder(@NonNull AdapterRoomHosting.MyViewHolder holder, int position) {
+        holder.bind(Mhost.get(position), listener);
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -51,7 +51,7 @@ public class AdapterRoomHosting  extends RecyclerView.Adapter<AdapterRoomHosting
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView gambarHost;
-        TextView namaKamar,status,rating,price;
+        TextView namaKamar,status,rating,price,lokasi,typeKamar;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,16 +60,18 @@ public class AdapterRoomHosting  extends RecyclerView.Adapter<AdapterRoomHosting
             status = itemView.findViewById(R.id.statusKamar);
             rating = itemView.findViewById(R.id.rating);
             price = itemView.findViewById(R.id.price);
+            lokasi =itemView.findViewById(R.id.locationRoom);
+            typeKamar=itemView.findViewById(R.id.typeKamar);
         }
 
-        public void bind(final ModelHost item, final OnItemClickListener listener) {
-            gambarHost.setImageBitmap(item.getGambar());
-            namaKamar.setText(item.getNamaKamar());
-            status.setText(item.getStatus());
-            rating.setText(item.getRating().toString());
-            price.setText(item.getTotalRating().toString());
-
-
+        public void bind(final Room item, final OnItemClickListener listener) {
+            //gambarHost.setImageBitmap(item.getGambar());
+            namaKamar.setText(item.getName());
+            //    status.setText(item.get);
+            //  rating.setText(item.ge);
+            price.setText(item.getPrice());
+            lokasi.setText(item.getLocation());
+            typeKamar.setText(item.getType());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,5 +80,4 @@ public class AdapterRoomHosting  extends RecyclerView.Adapter<AdapterRoomHosting
             });
         }
     }
-
 }

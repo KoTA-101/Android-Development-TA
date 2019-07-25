@@ -1,5 +1,6 @@
 package com.example.innstant.ui.RoomListed;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,28 +21,38 @@ import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
+import com.example.innstant.data.model._id;
 import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
 import com.example.innstant.ui.HostRoom.Model.ModelHost;
 import com.example.innstant.ui.RoomListed.Adapter.adapterListedRoom;
 import com.example.innstant.viewmodel.ListerRoomVewModel;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
 
-public class ListedRoomActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterRoomHosting.OnItemClickListener, adapterListedRoom.OnItemClickListener {
+import static java.util.Collections.singletonList;
+
+public class ListedRoomActivity extends AppCompatActivity implements adapterListedRoom.OnItemClickListener {
     private ListerRoomVewModel mViewModel;
     RecyclerView recyclerView;
     adapterListedRoom adapter;
     ArrayList<Room> list;
     RecyclerView.LayoutManager layoutManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,24 +70,12 @@ public class ListedRoomActivity extends AppCompatActivity implements NavigationV
         GetData();
     }
 
-    @Override
-    public void onItemClick(ModelHost item) {
-
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
-    }
-
-    @Override
-    public void onItemClick(Room item) {
-
-    }
     public ArrayList<Room> GetData()  {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
         String url = PreferenceHelper.getBaseUrl() + "/rooms";
+
+        Type listType = new TypeToken<List<String>>() {}.getType();
 
         JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
@@ -88,18 +87,9 @@ public class ListedRoomActivity extends AppCompatActivity implements NavigationV
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 Room room =new Room();
-                              /*  movie.setTitle(jsonObject.getString(
-                                        "title"));
-                                movie.setRating(jsonObject.getInt(
-                                        "rating"));*/
-                                room.setName(jsonObject.getString("name"));
-                                room.setPrice(jsonObject.getString("price"));
-                                room.setType(jsonObject.getString("type"));
-                                room.setLocation(jsonObject.getString("location"));
+                                room = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
                                 list.add(room);
-//                                Toast.makeText(ListedRoomActivity.this,"berhasil    :"+list,Toast.LENGTH_LONG).show();
-                                //get adapter
-                                adapter = new adapterListedRoom(ListedRoomActivity.this,list, ListedRoomActivity.this);
+                           adapter = new adapterListedRoom(ListedRoomActivity.this,list, ListedRoomActivity.this);
                                 recyclerView.setAdapter(adapter);
 
                             } catch (JSONException e) {
@@ -130,6 +120,17 @@ public class ListedRoomActivity extends AppCompatActivity implements NavigationV
         };
         requstQueue.add(jsonobj);
         return list;
+    }
+
+
+
+    @Override
+    public void onItemClick(Room item) {
+        Intent intent = new Intent(ListedRoomActivity.this, RoomDetailActivity.class);
+        Gson gson = new Gson();
+        String email =gson.toJson(item);
+        Toast.makeText(ListedRoomActivity.this,email,Toast.LENGTH_LONG).show();
+       // startActivity(intent);
     }
 
 }

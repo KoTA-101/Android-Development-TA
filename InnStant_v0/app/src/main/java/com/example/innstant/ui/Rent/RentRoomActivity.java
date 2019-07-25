@@ -6,31 +6,55 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
+import com.example.innstant.data.PreferenceHelper;
+import com.example.innstant.data.model.Room;
+import com.example.innstant.data.model.Transaction;
 import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
-import com.example.innstant.ui.Rent.Model.ModelRent;
+import com.example.innstant.ui.RoomListed.Adapter.adapterListedRoom;
 import com.example.innstant.ui.RoomListed.ListedRoomActivity;
+import com.example.innstant.viewmodel.ListerRoomVewModel;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.ButterKnife;
 
 public class RentRoomActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterRoomRent.OnItemClickListener {
+    private ListerRoomVewModel mViewModel;
     Button rent;
     RecyclerView recyclerView;
     AdapterRoomRent adapter;
-    ArrayList<ModelRent> list;
+    ArrayList<Transaction> list;
     RecyclerView.LayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,25 +79,74 @@ public class RentRoomActivity extends AppCompatActivity
 
         rent =(Button) findViewById(R.id.addRent);
 
-        ModelRent p = new ModelRent();
-        p.setNamaKamar("kamar azah");
-        p.setStatus("gratisan");
-        p.setAwal(new SimpleDateFormat("2018-10-18"));
-        p.setAkhir(new SimpleDateFormat("2019-10-18"));
-        p.setDistance((float) 10.2);
-        p.setLocation("cinunuk");
-        list.add(p);
-        adapter = new AdapterRoomRent(RentRoomActivity.this,list, RentRoomActivity.this);
-        recyclerView.setAdapter(adapter);
+        ButterKnife.bind(this);
+        mViewModel = ViewModelProviders.of(this).get(ListerRoomVewModel.class);
+
+        GetData();
 
         rent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = getIntent().getExtras();
+                String json = bundle.getString("email");
                 Intent intent = new Intent(RentRoomActivity.this, ListedRoomActivity.class);
+                Toast.makeText(RentRoomActivity.this,json,Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
         });
     }
+
+    public void  GetData()  {
+        mViewModel.openServerConnection();
+        RequestQueue requstQueue = Volley.newRequestQueue(this);
+        String url = PreferenceHelper.getBaseUrl() + "/transactions";
+
+        Type listType = new TypeToken<List<String>>() {}.getType();
+
+        JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+                        for (int i = 0; i < response.length(); i++) {
+
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                Transaction room = new Transaction();
+                                room = new Gson().fromJson(String.valueOf(jsonObject), Transaction.class);
+                                list.add(room);
+                                adapter = new AdapterRoomRent(RentRoomActivity.this,list,  RentRoomActivity.this);
+                                recyclerView.setAdapter(adapter);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(RentRoomActivity.this,"gagal     :"+error.toString(),Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+        ){
+            //here I want to post data to sever
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+//                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+                return headers;
+            }
+        };
+        requstQueue.add(jsonobj);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -133,5 +206,8 @@ public class RentRoomActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onItemClick(Transaction item) {
 
+    }
 }

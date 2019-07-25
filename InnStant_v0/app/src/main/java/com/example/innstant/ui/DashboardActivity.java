@@ -2,6 +2,7 @@ package com.example.innstant.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,17 +16,34 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.R;
+import com.example.innstant.data.model.Transaction;
+import com.example.innstant.data.model.User;
 import com.example.innstant.ui.Dashboard.DashboardMessageActivity;
 import com.example.innstant.ui.Dashboard.DashboardNotificationActivity;
+import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
 import com.example.innstant.ui.Rent.RentRoomActivity;
 import com.example.innstant.viewmodel.DashboardViewModel;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +76,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         //testAPI();
     }
-
+/*
     private void testAPI() {
         mViewModel.openServerConnection();
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -67,7 +85,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 response -> Toast.makeText(DashboardActivity.this, "Users: " + response, Toast.LENGTH_LONG).show(),
                 error -> Toast.makeText(DashboardActivity.this, error.getMessage(), Toast.LENGTH_LONG).show());
         queue.add(stringRequest);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -132,15 +150,29 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     @OnClick({R.id.rent, R.id.hosting})
     public void onViewClicked(View view) {
         Intent intent;
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
+
+        if(json.equals("dasukirohmat@gmail.com")){
+            json = "5d1df999c6036b3087987f03";
+        }else if(json.equals("rohmat661@gmail.com")){
+            json = "5d359d3cc6036b3cd30785b8";
+        }
+
         switch (view.getId()) {
             case R.id.rent:
+
                 intent = new Intent(DashboardActivity.this, RentRoomActivity.class);
+//                Toast.makeText(DashboardActivity.this,json,Toast.LENGTH_LONG).show();
+                intent.putExtra("email",json);
                 startActivity(intent);
                 break;
             case R.id.hosting:
                 intent = new Intent(DashboardActivity.this, RoomHostingActivity.class);
+                intent.putExtra("email",json);
                 startActivity(intent);
                 break;
         }
     }
+
 }

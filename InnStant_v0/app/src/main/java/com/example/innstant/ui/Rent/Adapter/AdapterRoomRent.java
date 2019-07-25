@@ -1,5 +1,6 @@
 package com.example.innstant.ui.Rent.Adapter;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,74 +12,67 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.innstant.R;
-import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
-import com.example.innstant.ui.HostRoom.Model.ModelHost;
-import com.example.innstant.ui.Rent.Model.ModelRent;
-import com.example.innstant.ui.Rent.RentRoomActivity;
+import com.example.innstant.data.model.Room;
+import com.example.innstant.data.model.Transaction;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-public class AdapterRoomRent extends RecyclerView.Adapter<AdapterRoomRent.MyViewHolder> {
+public class AdapterRoomRent extends RecyclerView.Adapter<AdapterRoomRent.MyViewHolder>  {
     Context context;
-    ArrayList<ModelRent> Mrent;
+    ArrayList<Transaction> Mhost;
     OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(ModelRent item);
+        void onItemClick(Transaction item);
     }
 
-    public AdapterRoomRent(Context context, ArrayList<ModelRent> pencarian, RentRoomActivity listener) {
+    public AdapterRoomRent(Context context, ArrayList<Transaction> pencarian, OnItemClickListener listener) {
         this.context = context;
-        Mrent = pencarian;
-//        this.listener = (AdapterView.OnItemClickListener) listener;
+        Mhost = pencarian;
+        this.listener = listener;
     }
-
-
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_rent, viewGroup, false);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaction, parent, false);
         return new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.bind(Mrent.get(i), listener);
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.bind(Mhost.get(position), listener);
     }
 
     @Override
     public int getItemCount() {
-        return Mrent.size();
+        return Mhost.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView gambarRent,gambarPenyewa;
-        TextView namaKamar,status,lokasi,awal,akhir,namaPenyewa;
+        TextView transaksiID,hosID,guessID,transaksiTimestamp,bookStart,bookEnd,statusPembayaran,roomID;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            gambarPenyewa = itemView.findViewById(R.id.gambarPenyewa);
-            gambarRent = itemView.findViewById(R.id.GambarRent);
-            namaKamar=itemView.findViewById(R.id.namaKamar);
-            status=itemView.findViewById(R.id.statusKamar);
-            lokasi =itemView.findViewById(R.id.lokasi);
-            awal=itemView.findViewById(R.id.tanggalMasuk);
-            akhir=itemView.findViewById(R.id.tanggalKeluar);
-            namaPenyewa=itemView.findViewById(R.id.penyewa);
-
+            transaksiID = itemView.findViewById(R.id.transaksiID);
+            hosID = itemView.findViewById(R.id.hostID);
+            guessID = itemView.findViewById(R.id.guessID);
+            roomID = itemView.findViewById(R.id.roomID);
+            transaksiTimestamp = itemView.findViewById(R.id.timestampTransaction);
+            bookStart = itemView.findViewById(R.id.bookStart);
+            bookEnd =itemView.findViewById(R.id.bookEnd);
+            statusPembayaran=itemView.findViewById(R.id.statusBayar);
         }
 
-        public void bind(final ModelRent item, final AdapterRoomRent.OnItemClickListener listener) {
-            gambarPenyewa.setImageBitmap(item.getGambarPenyewa());
-            gambarRent.setImageBitmap(item.getGambarKamar());
-            namaKamar.setText(item.getNamaKamar());
-            status.setText(item.getStatus());
-            lokasi.setText(item.getLocation());
-            awal.setText(item.getAwal().toLocalizedPattern());
-            akhir.setText(item.getAkhir().format(new Date()));
-            namaPenyewa.setText(item.getNamaKamar());
+        public void bind(final Transaction item, final OnItemClickListener listener) {
+            transaksiID.setText(item.getTransactionId());
+            hosID.setText(item.getHostId());
+            guessID.setText(item.getGuestId());
+            roomID.setText(item.getRoomId());
+            transaksiTimestamp.setText((CharSequence) item.getTransactionTimestamp());
+            bookStart.setText((CharSequence) item.getBookStartDate());
+            bookEnd.setText((CharSequence) item.getBookEndDate());
+            statusPembayaran.setText(item.getPaymentStatus());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -87,5 +81,4 @@ public class AdapterRoomRent extends RecyclerView.Adapter<AdapterRoomRent.MyView
             });
         }
     }
-
 }

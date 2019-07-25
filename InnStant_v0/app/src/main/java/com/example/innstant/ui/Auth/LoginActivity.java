@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void goToSecondActivity() {
         Intent intent = new Intent(this, DashboardActivity.class);
+        intent.putExtra("email",editText_username.getText().toString());
         startActivity(intent);
     }
 
@@ -114,7 +115,8 @@ public class LoginActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
 //                String credentials = "dasukirohmat@gmail.com:secret";
-                String credentials = editText_username.getText()+":"+editText_password.getText();
+//                String credentials = editText_username.getText()+":"+editText_password.getText();
+                String credentials = "dasukirohmat@gmail.com:secret";
                 String auth = "Basic "
                         + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                 headers.put("Content-Type", "application/json");

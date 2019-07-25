@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
+            android:id="@+id/viewRequestIdle"
             android:layout_marginTop="50dp"
             android:text="View Request"
             android:textColor="#fff"
@@ -46,40 +47,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <CalendarView
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"></CalendarView>
         <LinearLayout
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <Button
-                android:textColor="#fff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit "/>
             <TextView
-                android:layout_marginTop="75dp"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#D6D6D6"/>
-            <TextView
-                android:textStyle="bold"
-                android:text="Available"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#D6D6D6"/>
+                android:text="choose your first stay schedule"/>
+            <TextView
+                android:id="@+id/from"
+                android:clickable="true"
+                android:hint="10/10/2019"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
             <TextView
                 android:layout_marginTop="50dp"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#707070"/>
-            <TextView
-                android:textStyle="bold"
-                android:text="Booked"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#D6D6D6"/>
+                android:text="choose your last stay schedule"/>
+            <TextView
+                android:id="@+id/to"
+                android:clickable="true"
+                android:hint="12/10/2019"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
         </LinearLayout>
     </LinearLayout>
 

@@ -22,7 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
-import com.example.innstant.data.model.user2;
+import com.example.innstant.data.model.User;
 import com.example.innstant.viewmodel.SignUpViewModel;
 import com.google.gson.GsonBuilder;
 
@@ -136,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
         String url = PreferenceHelper.getBaseUrl() + "/users";
-        user2 user = new user2();
+        User user = new User();
         user.setFirstName(firstname.getText().toString());
         user.setLastName(lastname.getText().toString());
         user.setIdCardNumber(idCardNumber.getText().toString());

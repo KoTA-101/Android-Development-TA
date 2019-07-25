@@ -14,7 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Transaction {
     @SerializedName("_id")
-    private String _id;
+    private _id _id;
+    @SerializedName("transaction_id")
+    private String transactionId;
     @SerializedName("host_id")
     private String hostId;
     @SerializedName("guest_id")
@@ -22,7 +24,7 @@ public class Transaction {
     @SerializedName("room_id")
     private String roomId;
     @SerializedName("transaction_timestamp")
-    private Timestamp transactionTimestamp;
+    private Date transactionTimestamp;
     @SerializedName("book_start_date")
     private Date bookStartDate;
     @SerializedName("book_end_date")

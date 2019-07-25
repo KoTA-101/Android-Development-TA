@@ -15,6 +15,9 @@ public class User {
     @SerializedName("_id")
     private _id _id;
 
+    @SerializedName("user_id")
+    private String userId;
+
     @SerializedName("first_name")
     private String firstName;
 

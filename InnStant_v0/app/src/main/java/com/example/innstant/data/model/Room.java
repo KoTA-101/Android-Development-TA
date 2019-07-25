@@ -16,8 +16,8 @@ public class Room {
      private _id _id;
     @SerializedName("name")
      private String name;
-    @SerializedName("ownerId")
-     private String ownerId;
+    @SerializedName("owner_id")
+     private String owner_id;
     @SerializedName("type")
      private String type;
     @SerializedName("location")
@@ -32,8 +32,12 @@ public class Room {
      private String description;
     @SerializedName("price")
      private String price;
-    @SerializedName("dpPercentage")
-     private String dpPercentage;
+    @SerializedName("dp_percentage")
+     private Integer dpPercentage;
+    @SerializedName("rating")
+     private  double rating;
+    @SerializedName("total_review")
+     private  Integer total_review;
     @SerializedName("photo")
      private List<String> photos;
 }
