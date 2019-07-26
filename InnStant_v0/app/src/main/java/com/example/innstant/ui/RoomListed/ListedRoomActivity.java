@@ -126,11 +126,15 @@ public class ListedRoomActivity extends AppCompatActivity implements adapterList
 
     @Override
     public void onItemClick(Room item) {
-        Intent intent = new Intent(ListedRoomActivity.this, RoomDetailActivity.class);
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
         Gson gson = new Gson();
-        String email =gson.toJson(item);
-        Toast.makeText(ListedRoomActivity.this,email,Toast.LENGTH_LONG).show();
-       // startActivity(intent);
+        String data =gson.toJson(item);
+        Intent intent = new Intent(ListedRoomActivity.this, RoomDetailActivity.class);
+        intent.putExtra("email",json);
+        intent.putExtra("data",data);
+        Toast.makeText(ListedRoomActivity.this,json,Toast.LENGTH_LONG).show();
+        startActivity(intent);
     }
 
 }

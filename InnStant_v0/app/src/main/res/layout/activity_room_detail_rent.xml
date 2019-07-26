@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    android:id="@+id/namaKamar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kamar 1"
@@ -30,7 +31,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <TextView
-
                         android:id="@+id/priceTag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -79,9 +79,7 @@ tercantum, anak pemilik cantik "/>
                 <TextView
                     android:id="@+id/showerRent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#707070"
-                    android:alpha="0.6"/>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
             <LinearLayout
@@ -100,8 +98,7 @@ tercantum, anak pemilik cantik "/>
                     android:id="@+id/foodRent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#707070"
-                    android:alpha="0.6"/>
+                     />
 
             </LinearLayout>
             <LinearLayout
@@ -120,8 +117,7 @@ tercantum, anak pemilik cantik "/>
                     android:id="@+id/wifiRent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#707070"
-                    android:alpha="0.6"/>
+                     />
 
             </LinearLayout>
             <LinearLayout
@@ -140,8 +136,7 @@ tercantum, anak pemilik cantik "/>
                     android:id="@+id/acfanRent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#707070"
-                    android:alpha="0.6"/>
+                     />
 
             </LinearLayout>
             <LinearLayout
@@ -160,8 +155,7 @@ tercantum, anak pemilik cantik "/>
                     android:id="@+id/parkingRent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#707070"
-                    android:alpha="0.6"/>
+                     />
 
             </LinearLayout>
             <LinearLayout
@@ -182,8 +176,8 @@ tercantum, anak pemilik cantik "/>
                     android:id="@+id/securityRent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#707070"
-                    android:alpha="0.6"/>
+                     
+                  />
 
             </LinearLayout>
 
@@ -196,16 +190,16 @@ tercantum, anak pemilik cantik "/>
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp" />
-
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:text="Ratings "/>
                 <TextView
                     android:id="@+id/ratings"
-                    android:layout_width="61dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3/5" />
 
-                    <RatingBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
 
 
             </LinearLayout>

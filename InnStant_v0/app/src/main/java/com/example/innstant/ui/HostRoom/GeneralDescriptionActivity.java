@@ -136,8 +136,12 @@ public class GeneralDescriptionActivity extends AppCompatActivity {
         room.setAmenities(ameni);
         Gson gson = new Gson();
         String paramString = gson.toJson(room);
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
+
         Intent intent =new Intent(GeneralDescriptionActivity.this, AddPictureActivity.class);
         intent.putExtra("dataRoom",paramString);
+        intent.putExtra("email",json);
         startActivity(intent);
 //        Toast.makeText(GeneralDescriptionActivity.this,paramString,Toast.LENGTH_LONG).show();
         /*  try {

@@ -66,6 +66,8 @@ public class SetLocationActivity extends FragmentActivity {
 
     @OnClick({R.id.setloc, R.id.nextinput})
     public void onViewClicked(View view) {
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
         switch (view.getId()) {
             case R.id.setloc:
                 break;
@@ -74,6 +76,7 @@ public class SetLocationActivity extends FragmentActivity {
                 location = (EditText) findViewById(R.id.location);
                 String loc = location.getText().toString();
                 intent.putExtra("location",loc);
+                intent.putExtra("email",json);
                 startActivity(intent);
                 break;
         }

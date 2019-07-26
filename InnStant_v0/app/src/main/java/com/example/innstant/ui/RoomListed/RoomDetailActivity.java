@@ -27,7 +27,7 @@ import java.util.List;
 
 public class RoomDetailActivity extends AppCompatActivity {
     Button viewstatus ;
-    TextView desc,shower,food,wifi,acfan,parking,security ;
+    TextView desc,shower,food,wifi,acfan,parking,security,priceTag,namaKamar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,8 @@ public class RoomDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room_detail);
 
         Bundle bundle = getIntent().getExtras();
-        String json = bundle.getString("detailKamar");
+        String json = bundle.getString("data");
+        String json1 = bundle.getString("email");
         Gson gson = new Gson();
         Room room= gson.fromJson(json,Room.class);
         List amenis = new ArrayList<>() ;
@@ -50,6 +51,8 @@ public class RoomDetailActivity extends AppCompatActivity {
         acfan=(TextView) findViewById(R.id.acfan);
         parking=(TextView) findViewById(R.id.parking);
         security=(TextView) findViewById(R.id.security);
+        priceTag=(TextView) findViewById(R.id.priceTag);
+        namaKamar=(TextView) findViewById(R.id.namaKamar);
 
         shower.setText("Not Available");
         food.setText("Not Available");
@@ -58,8 +61,11 @@ public class RoomDetailActivity extends AppCompatActivity {
         parking.setText("Not Available");
         security.setText("Not Available");
 
+        priceTag.setText(room.getPrice().toString());
+        namaKamar.setText(room.getName());
 
         List finalAmenis = amenis;
+
         for(int x=0 ; finalAmenis.size()>x  ; x++){
             if(finalAmenis.get(x).toString().equals("Shower")){
                 shower.setText(finalAmenis.get(x).toString());
@@ -84,6 +90,8 @@ public class RoomDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RoomDetailActivity.this, idleActivity.class);
+                intent.putExtra("data",json);
+                intent.putExtra("email",json1);
                 startActivity(intent);
                 //Toast.makeText(RoomDetailActivity.this, finalAmenis.toString(),Toast.LENGTH_LONG).show();
 //                Log.d("test", String.valueOf(finalAmenis.length));

@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class Room {
     @SerializedName("_id")
      private _id _id;
+    @SerializedName("room_id")
+    private String roomId;
     @SerializedName("name")
      private String name;
     @SerializedName("owner_id")

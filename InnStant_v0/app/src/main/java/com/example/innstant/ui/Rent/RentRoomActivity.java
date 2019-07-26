@@ -28,7 +28,9 @@ import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
 import com.example.innstant.data.model.Transaction;
+import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
 import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
+import com.example.innstant.ui.RoomHostingActivity;
 import com.example.innstant.ui.RoomListed.Adapter.adapterListedRoom;
 import com.example.innstant.ui.RoomListed.ListedRoomActivity;
 import com.example.innstant.viewmodel.ListerRoomVewModel;
@@ -71,40 +73,43 @@ public class RentRoomActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        list = new ArrayList<>();
+
+        rent =(Button) findViewById(R.id.addRent);
+
         recyclerView = findViewById(R.id.rentRoom);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        rent =(Button) findViewById(R.id.addRent);
-
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(this).get(ListerRoomVewModel.class);
 
-        GetData();
 
+        GetData();
         rent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = getIntent().getExtras();
                 String json = bundle.getString("email");
                 Intent intent = new Intent(RentRoomActivity.this, ListedRoomActivity.class);
-                Toast.makeText(RentRoomActivity.this,json,Toast.LENGTH_LONG).show();
+                intent.putExtra("email",json);
                 startActivity(intent);
             }
         });
     }
 
+
     public void  GetData()  {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
         String url = PreferenceHelper.getBaseUrl() + "/transactions";
+        list = new ArrayList<>();
+
 
         Type listType = new TypeToken<List<String>>() {}.getType();
 
         JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
+                    Transaction room = new Transaction();
                     @Override
                     public void onResponse(JSONArray response) {
                         //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
@@ -112,16 +117,14 @@ public class RentRoomActivity extends AppCompatActivity
 
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                Transaction room = new Transaction();
                                 room = new Gson().fromJson(String.valueOf(jsonObject), Transaction.class);
                                 list.add(room);
-                                adapter = new AdapterRoomRent(RentRoomActivity.this,list,  RentRoomActivity.this);
-                                recyclerView.setAdapter(adapter);
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+                        adapter = new AdapterRoomRent(RentRoomActivity.this,list,  RentRoomActivity.this);
+                        recyclerView.setAdapter(adapter);
                     }
 
                 },

@@ -35,6 +35,7 @@ public class AddPictureActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("dataRoom");
+        String json1 = bundle.getString("email");
         Gson gson = new Gson();
         final Room room= gson.fromJson(json,Room.class);
 
@@ -64,6 +65,7 @@ public class AddPictureActivity extends AppCompatActivity {
                 Gson gson= new Gson();
                 String json = gson.toJson(room);
                 intent.putExtra("dataRoom",json);
+                intent.putExtra("email",json1);
                 startActivity(intent);
             }
         });

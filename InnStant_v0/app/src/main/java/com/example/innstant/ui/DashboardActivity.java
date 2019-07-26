@@ -170,6 +170,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             case R.id.hosting:
                 intent = new Intent(DashboardActivity.this, RoomHostingActivity.class);
                 intent.putExtra("email",json);
+                Toast.makeText(DashboardActivity.this,json,Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 break;
         }

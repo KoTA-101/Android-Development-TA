@@ -74,8 +74,8 @@ public class RoomHostingActivity extends AppCompatActivity
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    Bundle bundle = getIntent().getExtras();
-    String json = bundle.getString("email");
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,16 +158,19 @@ public class RoomHostingActivity extends AppCompatActivity
 
     @OnClick({R.id.addroom})
     public void onViewClicked(View view) {
-
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
 
         switch (view.getId()) {
             case R.id.addroom:
                 Intent intent = new Intent(RoomHostingActivity.this, SetLocationActivity.class);
                 intent.putExtra("email",json);
+//                Toast.makeText(RoomHostingActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 break;
         }
     }
+
     public void  GetData()  {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
@@ -190,11 +193,7 @@ public class RoomHostingActivity extends AppCompatActivity
 
                                 room = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
                                 list.add(room);
-                                if(room.getOwner_id() == json){
-                                    list.add(room);
-                                }else{
 
-                                }
 
 
                             } catch (JSONException e) {
@@ -227,6 +226,7 @@ public class RoomHostingActivity extends AppCompatActivity
         };
         requstQueue.add(jsonobj);
     }
+
     @Override
     public void onItemClick(Room item) {
 

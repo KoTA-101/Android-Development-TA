@@ -9,33 +9,51 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.innstant.R;
-import com.example.innstant.ui.RentStatus.idleActivity;
+import com.example.innstant.data.model.Room;
+import com.example.innstant.data.model.Transaction;
+import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class SelectDateActivity extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
+    EditText awal,akhir;
+    TextView price,dp,total;
+    Gson gson = new Gson();
+    Transaction transaksi = new Transaction();
+    Button requestBook;
+    Bundle bundle;
+    String json,json1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_date);
         setTitle("Select Date");
-        EditText awal = (EditText) findViewById(R.id.awal);
-        EditText akhir = (EditText) findViewById(R.id.akhir);
-        Button requestBook = (Button) findViewById(R.id.requestBook);
+         awal = (EditText) findViewById(R.id.awal);
+         akhir = (EditText) findViewById(R.id.akhir);
+         dp =(TextView) findViewById(R.id.Dp);
+         price=(TextView) findViewById(R.id.price);
+         total=(TextView) findViewById(R.id.totalPrice);
+         requestBook = (Button) findViewById(R.id.requestBook);
+         bundle = getIntent().getExtras();
+         json = bundle.getString("data");
+         json1 = bundle.getString("email");
+
+        Room room= gson.fromJson(json,Room.class);
 
 
-        requestBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectDateActivity.this,ApprovalActivity.class);
-                startActivity(intent);
-            }
-        });
+//        dp.setText(room.getDpPercentage(), TextView.BufferType.NORMAL);
+        price.setText(room.getPrice().toString());
+        total.setText(room.getPrice());
 
         awal.setOnClickListener(new View.OnClickListener() {
             DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -48,14 +66,16 @@ public class SelectDateActivity extends AppCompatActivity {
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     updateLabel();
+
                 }
 
-                private void updateLabel() {
-                    String myFormat = "MM/dd/yy"; //In which you need put here
-                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                private void updateLabel(){
+                    String myFormat = "dd-MM-yyyy"; //In which you need put here
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
 
                     awal.setText(sdf.format(myCalendar.getTime()));
-                }
+                    transaksi.setBookStartDate(myCalendar.getTime());
+                  }
 
             };
             @Override
@@ -79,13 +99,16 @@ public class SelectDateActivity extends AppCompatActivity {
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     updateLabel();
+
                 }
 
                 private void updateLabel() {
-                    String myFormat = "MM/dd/yy"; //In which you need put here
+                    String myFormat = "dd-MM-yyyy"; //In which you need put here
                     SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                     akhir.setText(sdf.format(myCalendar.getTime()));
+                    transaksi.setBookEndDate(myCalendar.getTime());
+
                 }
 
             };
@@ -98,5 +121,18 @@ public class SelectDateActivity extends AppCompatActivity {
             }
         });
 
+        requestBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String paramString = gson.toJson(transaksi);
+                Intent intent = new Intent(SelectDateActivity.this,ApprovalActivity.class);
+                intent.putExtra("email",json1);
+                intent.putExtra("data",json);
+                intent.putExtra("dataTransaksi",paramString);
+                Toast.makeText(SelectDateActivity.this,"TEST   "+json1,Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+        });
     }
 }

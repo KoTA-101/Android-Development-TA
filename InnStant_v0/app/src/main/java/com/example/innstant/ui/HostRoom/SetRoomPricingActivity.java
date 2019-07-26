@@ -56,6 +56,7 @@ public class SetRoomPricingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SetRoomPricingActivity.this, SetAvaliabilityActivity.class);
+                postData();
                 startActivity(intent);
             }
         });
@@ -71,11 +72,13 @@ public class SetRoomPricingActivity extends AppCompatActivity {
 
     }
     public void postData()  {
-        mViewModel.openServerConnection();
-        RequestQueue requstQueue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/users/5d1df999c6036b3087987f03/rooms";
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("dataRoom");
+        String json1 = bundle.getString("email");
+        mViewModel.openServerConnection();
+        RequestQueue requstQueue = Volley.newRequestQueue(this);
+        String url = PreferenceHelper.getBaseUrl() + "/users/"+json1+"/rooms";
+
         Gson gson = new Gson();
         Room room= gson.fromJson(json,Room.class);
         room.setPrice(price.getText().toString());
