@@ -56,9 +56,9 @@ public class ApprovalActivity extends AppCompatActivity {
 
         cancel = (Button) findViewById(R.id.cancelBooking);
 
-
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(this).get(ApprovalViewModel.class);
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +83,7 @@ public class ApprovalActivity extends AppCompatActivity {
         transaksi.setHostId(room.getOwner_id());
         transaksi.setRoomId(room.getRoomId());
         transaksi.setPaymentStatus("belum bayar");
-     Toast.makeText(ApprovalActivity.this, json+"   :" + transaksi.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(ApprovalActivity.this, json+"   :" + transaksi.toString(), Toast.LENGTH_LONG).show();
         String paramString = new GsonBuilder().create().toJson(transaksi);
         try {
             JSONObject param = new JSONObject(paramString);

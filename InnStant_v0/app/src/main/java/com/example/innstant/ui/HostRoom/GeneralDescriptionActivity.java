@@ -76,7 +76,7 @@ public class GeneralDescriptionActivity extends AppCompatActivity {
         Editext_security=(CheckBox) findViewById(R.id.security);
 
         location.setText(loc);
-        next = (Button) findViewById(R.id.nextaddpict);
+        next = (Button) findViewById(R.id.saveroom);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -34,6 +34,7 @@ import com.example.innstant.ui.HostRoom.Model.ModelHost;
 import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
 import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
 import com.example.innstant.ui.Rent.RentRoomActivity;
+import com.example.innstant.ui.RoomListed.EditRoomActivity;
 import com.example.innstant.viewmodel.ListerRoomVewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.common.reflect.TypeToken;
@@ -229,6 +230,7 @@ public class RoomHostingActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(Room item) {
-
+        Intent intent = new Intent(RoomHostingActivity.this, EditRoomActivity.class);
+        startActivity(intent);
     }
 }
