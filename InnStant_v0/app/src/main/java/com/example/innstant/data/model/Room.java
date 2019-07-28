@@ -2,7 +2,9 @@ package com.example.innstant.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Room {
+public class Room  {
     @SerializedName("_id")
      private _id _id;
     @SerializedName("room_id")
@@ -42,4 +44,5 @@ public class Room {
      private  Integer total_review;
     @SerializedName("photo")
      private List<String> photos;
+
 }

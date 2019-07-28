@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,11 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
-import com.example.innstant.data.model.Transaction;
-import com.example.innstant.ui.HostRoom.Model.ModelHost;
 import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
-import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
-import com.example.innstant.ui.Rent.RentRoomActivity;
 import com.example.innstant.ui.RoomListed.EditRoomActivity;
 import com.example.innstant.viewmodel.ListerRoomVewModel;
 import com.google.android.material.navigation.NavigationView;
@@ -60,8 +55,9 @@ public class RoomHostingActivity extends AppCompatActivity
     private ListerRoomVewModel mViewModel;
     RecyclerView recyclerView;
     AdapterRoomHosting adapter;
-    ArrayList<Room> list;
+    ArrayList<Room> list = new ArrayList<>();
     RecyclerView.LayoutManager layoutManager;
+    String dataRoom = null;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -77,7 +73,6 @@ public class RoomHostingActivity extends AppCompatActivity
     DrawerLayout drawerLayout;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +84,7 @@ public class RoomHostingActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
         navView.setNavigationItemSelectedListener(this);
         recyclerView = findViewById(R.id.dataroom);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -97,7 +93,7 @@ public class RoomHostingActivity extends AppCompatActivity
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(this).get(ListerRoomVewModel.class);
 
-        GetData();
+        GetData(list);
 
 
     }
@@ -165,25 +161,24 @@ public class RoomHostingActivity extends AppCompatActivity
         switch (view.getId()) {
             case R.id.addroom:
                 Intent intent = new Intent(RoomHostingActivity.this, SetLocationActivity.class);
-                intent.putExtra("email",json);
+                intent.putExtra("email", json);
 //                Toast.makeText(RoomHostingActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 break;
         }
     }
 
-    public void  GetData()  {
+    public void GetData(ArrayList<Room> list) {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
         String url = PreferenceHelper.getBaseUrl() + "/rooms";
-        list = new ArrayList<>();
-
-
-        Type listType = new TypeToken<List<String>>() {}.getType();
-
-        JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url,null,
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
+        Gson gson = new Gson();
+        JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     Room room = new Room();
+
                     @Override
                     public void onResponse(JSONArray response) {
                         //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
@@ -195,13 +190,18 @@ public class RoomHostingActivity extends AppCompatActivity
                                 room = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
                                 list.add(room);
 
-
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        adapter = new AdapterRoomHosting(RoomHostingActivity.this,list,  RoomHostingActivity.this);
+/*                        for(int x=0; x < list.size() ; x++){
+                            if (list.get(x).getOwner_id().equals(json)) {
+                                dataRoom = list.get(x).getOwner_id();
+                            }else{
+                                dataRoom = "kosong" ;
+                            }
+                        }*/
+                        adapter = new AdapterRoomHosting(RoomHostingActivity.this, list, RoomHostingActivity.this);
                         recyclerView.setAdapter(adapter);
                     }
 
@@ -209,12 +209,12 @@ public class RoomHostingActivity extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RoomHostingActivity.this,"gagal     :"+error.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(RoomHostingActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }
 
-        ){
+        ) {
             //here I want to post data to sever
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -230,7 +230,14 @@ public class RoomHostingActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(Room item) {
-        Intent intent = new Intent(RoomHostingActivity.this, EditRoomActivity.class);
-        startActivity(intent);
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
+
+
+            Intent intent = new Intent(RoomHostingActivity.this, EditRoomActivity.class);
+            intent.putExtra("email", json);
+            intent.putExtra("dataRoom", list);
+            Toast.makeText(RoomHostingActivity.this,list.get(0).toString(),Toast.LENGTH_LONG).show();
+          //  startActivity(intent);
+        }
     }
-}
