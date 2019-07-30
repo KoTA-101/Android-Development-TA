@@ -221,7 +221,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             </LinearLayout>
-
+<LinearLayout
+    android:layout_marginTop="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
             <Button
                 android:layout_marginTop="10dp"
                 android:id="@+id/Delete"
@@ -231,6 +236,17 @@
                 android:background="#FF0000"
                 android:textColor="#fff"
                 android:text="Delete Room"/>
+    <Space
+        android:layout_width="100dp"
+        android:layout_height="wrap_content" />
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/Cancel"
+                android:layout_gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cacel Edit Room"/>
+</LinearLayout>
             <Button
                 android:layout_marginTop="20dp"
                 android:id="@+id/SaveEdit"

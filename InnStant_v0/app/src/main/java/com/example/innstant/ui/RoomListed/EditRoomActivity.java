@@ -47,7 +47,7 @@ import java.util.Map;
 import butterknife.ButterKnife;
 
 public class EditRoomActivity extends AppCompatActivity {
-    Button save, cancel;
+    Button save, cancel,delete;
     EditText location,roomName,roomType,desc,fee,downPayment;
     CheckBox shower,food,wifi,acfan,parking,security;
     ArrayList<Room> tempRoom = new ArrayList<>();
@@ -74,7 +74,8 @@ public class EditRoomActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this).get(EditRoomViewModel.class);
 
         save =(Button) findViewById(R.id.SaveEdit);
-        cancel = (Button) findViewById(R.id.Delete);
+        cancel = (Button) findViewById(R.id.Cancel);
+        delete =(Button) findViewById(R.id.Delete);
         location =(EditText) findViewById(R.id.location);
         roomName =(EditText) findViewById(R.id.roomName);
         roomType = (EditText) findViewById(R.id.roomType);
@@ -93,18 +94,25 @@ public class EditRoomActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
+
                 //Toast.makeText(EditRoomActivity.this,amenis.toString(),Toast.LENGTH_LONG).show();
                 Log.d("Amenisnya",amenis.toString());
                 postEditData(room,location,roomType,roomName,desc,fee,downPayment,shower,food,wifi,acfan,parking,security);
 
-                //startActivity(intent);
+
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
+                startActivity(intent);
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeleteRoom(id,kamar);
             }
         });
     }
@@ -278,12 +286,13 @@ public class EditRoomActivity extends AppCompatActivity {
 
         JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.DELETE, url, null,
                 new Response.Listener<JSONArray>() {
-                    Room room = new Room();
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        Toast.makeText(EditRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditRoomActivity.this,"delete berhasil    :"+response,Toast.LENGTH_LONG).show();
 //                        Log.d("respon",response.toString());
+                        Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
+                        startActivity(intent);
 
                     }
 
@@ -291,7 +300,7 @@ public class EditRoomActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(EditRoomActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditRoomActivity.this, "delete gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }
