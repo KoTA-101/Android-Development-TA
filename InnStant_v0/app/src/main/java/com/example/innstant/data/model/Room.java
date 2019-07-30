@@ -16,12 +16,12 @@ import lombok.NoArgsConstructor;
 public class Room  {
     @SerializedName("_id")
      private _id _id;
-    @SerializedName("room_id")
+    @SerializedName("roomId")
     private String roomId;
     @SerializedName("name")
      private String name;
-    @SerializedName("owner_id")
-     private String owner_id;
+    @SerializedName("ownerId")
+     private String ownerId;
     @SerializedName("type")
      private String type;
     @SerializedName("location")
@@ -36,7 +36,7 @@ public class Room  {
      private String description;
     @SerializedName("price")
      private String price;
-    @SerializedName("dp_percentage")
+    @SerializedName("dpPercentage")
      private Integer dpPercentage;
     @SerializedName("rating")
      private  double rating;

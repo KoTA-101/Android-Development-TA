@@ -2,6 +2,7 @@ package com.example.innstant.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,9 +56,8 @@ public class RoomHostingActivity extends AppCompatActivity
     private ListerRoomVewModel mViewModel;
     RecyclerView recyclerView;
     AdapterRoomHosting adapter;
-    ArrayList<Room> list = new ArrayList<>();
+    ArrayList<Room> list = new ArrayList<Room>();
     RecyclerView.LayoutManager layoutManager;
-    String dataRoom = null;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -174,33 +174,32 @@ public class RoomHostingActivity extends AppCompatActivity
         String url = PreferenceHelper.getBaseUrl() + "/rooms";
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("email");
-        Gson gson = new Gson();
+
         JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     Room room = new Room();
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+//                        Toast.makeText(RoomHostingActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+//                        Log.d("respon",response.toString());
+                        JSONObject jsonObject = new JSONObject();
                         for (int i = 0; i < response.length(); i++) {
 
                             try {
-                                JSONObject jsonObject = response.getJSONObject(i);
+                                 jsonObject = response.getJSONObject(i);
 
-                                room = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
-                                list.add(room);
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            room = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
+
+                                if(room.getOwnerId().equals(json)){
+                                    list.add(room);
+                                }
                         }
-/*                        for(int x=0; x < list.size() ; x++){
-                            if (list.get(x).getOwner_id().equals(json)) {
-                                dataRoom = list.get(x).getOwner_id();
-                            }else{
-                                dataRoom = "kosong" ;
-                            }
-                        }*/
                         adapter = new AdapterRoomHosting(RoomHostingActivity.this, list, RoomHostingActivity.this);
                         recyclerView.setAdapter(adapter);
                     }
@@ -232,12 +231,12 @@ public class RoomHostingActivity extends AppCompatActivity
     public void onItemClick(Room item) {
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("email");
-
-
             Intent intent = new Intent(RoomHostingActivity.this, EditRoomActivity.class);
             intent.putExtra("email", json);
-            intent.putExtra("dataRoom", list);
-            Toast.makeText(RoomHostingActivity.this,list.get(0).toString(),Toast.LENGTH_LONG).show();
-          //  startActivity(intent);
+            intent.putExtra("id", item.getRoomId());
+            Log.d("ini idnya",json);
+            Log.d("ID KAMAR",item.getRoomId());
+//            Toast.makeText(RoomHostingActivity.this,list.get(0).toString(),Toast.LENGTH_LONG).show();
+            startActivity(intent);
         }
     }

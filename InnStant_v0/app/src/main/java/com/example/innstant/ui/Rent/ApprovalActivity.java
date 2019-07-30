@@ -80,7 +80,7 @@ public class ApprovalActivity extends AppCompatActivity {
         Room room = gson.fromJson(json1, Room.class);
         transaksi = gson.fromJson(jsonTransaksi, Transaction.class);
         transaksi.setGuestId(json);
-        transaksi.setHostId(room.getOwner_id());
+        transaksi.setHostId(room.getOwnerId());
         transaksi.setRoomId(room.getRoomId());
         transaksi.setPaymentStatus("belum bayar");
         Toast.makeText(ApprovalActivity.this, json+"   :" + transaksi.toString(), Toast.LENGTH_LONG).show();

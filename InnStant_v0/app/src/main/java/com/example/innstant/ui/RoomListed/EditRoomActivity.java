@@ -1,10 +1,12 @@
 package com.example.innstant.ui.RoomListed;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,14 +14,37 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
+import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
+import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
+import com.example.innstant.ui.HostRoom.SetRoomPricingActivity;
 import com.example.innstant.ui.RoomHostingActivity;
+import com.example.innstant.viewmodel.EditRoomViewModel;
+import com.example.innstant.viewmodel.ListerRoomVewModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import butterknife.ButterKnife;
 
 public class EditRoomActivity extends AppCompatActivity {
     Button save, cancel;
@@ -27,14 +52,27 @@ public class EditRoomActivity extends AppCompatActivity {
     CheckBox shower,food,wifi,acfan,parking,security;
     ArrayList<Room> tempRoom = new ArrayList<>();
     Room room = new Room();
-    Gson gson = new Gson();
     List amenis = new ArrayList<>() ;
+    private EditRoomViewModel mViewModel;
 
-    @SuppressLint({"WrongViewCast", "CutPasteId"})
+    String showerText;
+    String foodText;
+    String wifiText;
+    String AcFanText;
+    String parkingText;
+    String securityText;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_room);
+        Bundle bundle = getIntent().getExtras();
+        String id = bundle.getString("email");
+        String kamar = bundle.getString("id");
+        ButterKnife.bind(this);
+        mViewModel = ViewModelProviders.of(this).get(EditRoomViewModel.class);
+
         save =(Button) findViewById(R.id.SaveEdit);
         cancel = (Button) findViewById(R.id.Delete);
         location =(EditText) findViewById(R.id.location);
@@ -43,27 +81,23 @@ public class EditRoomActivity extends AppCompatActivity {
         desc = (EditText) findViewById(R.id.description);
         fee = (EditText) findViewById(R.id.priceTag);
         downPayment = (EditText) findViewById(R.id.dp);
-        shower = (CheckBox) findViewById(R.id.location);
+        shower = (CheckBox) findViewById(R.id.shower);
         food =(CheckBox) findViewById(R.id.food);
         wifi =(CheckBox) findViewById(R.id.wifi);
-        acfan = (CheckBox) findViewById(R.id.acfan);
+        acfan = (CheckBox) findViewById(R.id.acorfan);
         parking= (CheckBox) findViewById(R.id.parking);
         security=(CheckBox) findViewById(R.id.security);
+        GetData(room,location,roomType,roomName,desc,fee,downPayment,shower,food,wifi,acfan,parking,security,kamar);
 
-        Bundle bundle = getIntent().getExtras();
-        String idUser = bundle.getString("email");
-        String dataRoom = bundle.getString("dataRoom");
-//       tempRoom =  new Gson().fromJson(dataRoom , Room.class);
-        amenis = room.getAmenities();
-        //setAllData
-        checkAmenities(amenis,shower,food,wifi,acfan,parking,security);
-        setFitur(room,location,roomType,roomName,desc,fee,downPayment);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
-                Toast.makeText(EditRoomActivity.this,room.toString(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(EditRoomActivity.this,amenis.toString(),Toast.LENGTH_LONG).show();
+                Log.d("Amenisnya",amenis.toString());
+                postEditData(room,location,roomType,roomName,desc,fee,downPayment,shower,food,wifi,acfan,parking,security);
+
                 //startActivity(intent);
             }
         });
@@ -75,47 +109,207 @@ public class EditRoomActivity extends AppCompatActivity {
         });
     }
 
-    private void checkAmenities(List amenis, CheckBox shower, CheckBox food, CheckBox wifi, CheckBox acfan, CheckBox parking, CheckBox security) {
-        for(int x = 0 ; x> amenis.size();x++){
-            if(amenis.get(x).equals("Ac/Fan")){
-                acfan.setChecked(true);
-            }else{
-                acfan.setChecked(false);
-            }
-            if( amenis.get(x) == "Shower"){
-               shower.setChecked(true);
-            }else{
-                shower.setChecked(false);
-            }
-            if( amenis.get(x) == "Wifi"){
-                wifi.setChecked(true);
-            }else{
-                wifi.setChecked(false);
-            }
-            if(amenis.get(x) =="Food"){
-                food.setChecked(true);
-            }else{
-                food.setChecked(false);
-            }
-            if(amenis.get(x)=="Parking"){
-                parking.setChecked(true);
-            }else{
-                parking.setChecked(false);
-            }
-            if(amenis.get(x) =="Security"){
-                security.setChecked(true);
-            }else{
-                security.setChecked(false);
-            }
-        }
-    }
+
     private void setFitur(Room room, EditText location, EditText roomType, EditText roomName, EditText desc, EditText fee, EditText downPayment){
      location.setText(room.getLocation());
      roomType.setText(room.getType());
      roomName.setText(room.getName());
      desc.setText(room.getDescription());
      fee.setText(room.getPrice());
-     downPayment.setText(room.getDpPercentage());
+     downPayment.setText(String.valueOf(room.getDpPercentage()));
     }
 
-}
+    public void GetData(Room room, EditText location, EditText roomType, EditText roomName, EditText desc, EditText fee, EditText downPayment, CheckBox shower, CheckBox food, CheckBox wifi, CheckBox acfan, CheckBox parking, CheckBox security, String kamar) {
+        mViewModel.openServerConnection();
+        RequestQueue requstQueue = Volley.newRequestQueue(this);
+        String url = PreferenceHelper.getBaseUrl() + "/rooms/"+kamar;
+        JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    Room room1 = new Room();
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+//                        Toast.makeText(EditRoomActivity.this,"ini idnya boys"+room.getRoomId(),Toast.LENGTH_LONG).show();
+                        Log.d("RESPONBRO",response.toString());
+
+                        JSONObject jsonObject = response;
+                            room1 = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
+
+                        amenis = room1.getAmenities();
+                        acfan.setChecked(false);
+                         shower.setChecked(false);
+                         wifi.setChecked(false);
+                         food.setChecked(false);
+                         parking.setChecked(false);
+                         security.setChecked(false);
+                        //setAllData
+                        for(int x = 0 ; x<amenis.size();x++){
+                            if(amenis.get(x).equals("Ac/Fan")){
+                                 acfan.setChecked(true);
+                            }else if( amenis.get(x).equals("Shower")){
+                                 shower.setChecked(true);
+                            }else if( amenis.get(x).equals("Wifi")){
+                                 wifi.setChecked(true);
+                            }else if(amenis.get(x).equals("Food")){
+                                 food.setChecked(true);
+                            }else if(amenis.get(x).equals("Parking")){
+                                 parking.setChecked(true);
+                            }else if(amenis.get(x).equals("Security")){
+                                 security.setChecked(true);
+                            }
+                        }
+
+                        setFitur(room1,location,roomType,roomName,desc,fee,downPayment);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EditRoomActivity.this, "gagal  Edit   :" + error.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+        ) {
+            //here I want to post data to sever
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+//                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+                return headers;
+            }
+        };
+        requstQueue.add(jsonobj);
+    }
+    public void postEditData(Room room, EditText location, EditText roomType, EditText roomName, EditText desc, EditText fee, EditText downPayment, CheckBox shower, CheckBox food, CheckBox wifi, CheckBox acfan, CheckBox parking, CheckBox security){
+        mViewModel.openServerConnection();
+        RequestQueue requstQueue = Volley.newRequestQueue(this);
+        String url = PreferenceHelper.getBaseUrl() + "/users/"+room.getOwnerId()+"/rooms/"+room.getRoomId();
+        ArrayList<String> ameni = new ArrayList<String>();
+        //setAmenities
+        if(acfan.isChecked()){
+            AcFanText ="Ac/Fan";
+        }else{
+            AcFanText=null;
+        }
+        if(shower.isChecked()){
+            showerText="Shower";
+        }else{
+            showerText=null;
+        }
+        if(wifi.isChecked()){
+            wifiText="Wifi";
+        }else{
+            wifiText=null;
+        }
+        if(food.isChecked()){
+            foodText ="Food";
+        }else{
+            foodText =null;
+        }
+        if(parking.isChecked()){
+            parkingText="Parking";
+        }else{
+            parkingText=null;
+        }
+        if(security.isChecked()){
+            securityText ="Security";
+        }else{
+            securityText=null;
+        }
+
+        ameni.add(showerText);
+        ameni.add(foodText);
+        ameni.add(wifiText);
+        ameni.add(AcFanText);
+        ameni.add(parkingText);
+        ameni.add(securityText);
+        room.setAmenities(ameni);
+        room.setLocation(location.getText().toString());
+        room.setType(roomType.getText().toString());
+        room.setName(roomName.getText().toString());
+        room.setDescription(desc.getText().toString());
+        room.setPrice(fee.getText().toString());
+        room.setDpPercentage(Integer.parseInt(String.valueOf(downPayment.getText())));
+        String paramString = new Gson().toJson(room);
+//        Toast.makeText(SetRoomPricingActivity.this,paramString,Toast.LENGTH_LONG).show();
+        try {
+            JSONObject param = new JSONObject(paramString);
+
+            JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.PUT, url,param,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Toast.makeText(EditRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+                        }
+
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(EditRoomActivity.this,"gagal     :"+error,Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+            ){
+                //here I want to post data to sever
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    // Basic Authentication
+                    //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+//                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+                    return headers;
+                }
+            };
+            requstQueue.add(jsonobj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void DeleteRoom(String userId , String roomId){
+        mViewModel.openServerConnection();
+        RequestQueue requstQueue = Volley.newRequestQueue(this);
+        String url = PreferenceHelper.getBaseUrl() + "/users/"+userId+"/rooms/"+roomId;
+
+        JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.DELETE, url, null,
+                new Response.Listener<JSONArray>() {
+                    Room room = new Room();
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Toast.makeText(EditRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+//                        Log.d("respon",response.toString());
+
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EditRoomActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+        ) {
+            //here I want to post data to sever
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+//                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+                return headers;
+            }
+        };
+        requstQueue.add(jsonobj);
+        }
+
+    }
+
+
