@@ -15,20 +15,22 @@ import lombok.NoArgsConstructor;
 public class Transaction {
     @SerializedName("_id")
     private _id _id;
-    @SerializedName("transaction_id")
+    @SerializedName("transactionId")
     private String transactionId;
-    @SerializedName("host_id")
+    @SerializedName("hostId")
     private String hostId;
-    @SerializedName("guest_id")
+    @SerializedName("guestId")
     private String guestId;
-    @SerializedName("room_id")
+    @SerializedName("roomId")
     private String roomId;
-    @SerializedName("transaction_timestamp")
+    @SerializedName("transactionTimestamp")
     private Date transactionTimestamp;
-    @SerializedName("book_start_date")
+    @SerializedName("bookStartDate")
     private Date bookStartDate;
-    @SerializedName("book_end_date")
+    @SerializedName("bookEndDate")
     private Date bookEndDate;
-    @SerializedName("payment_status")
+    @SerializedName("paymentStatus")
     private String paymentStatus;
+    @SerializedName("isBookingCanceled")
+    private  Boolean isBookingCanceled;
 }

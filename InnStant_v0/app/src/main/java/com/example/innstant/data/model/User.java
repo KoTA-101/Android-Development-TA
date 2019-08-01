@@ -15,19 +15,19 @@ public class User {
     @SerializedName("_id")
     private _id _id;
 
-    @SerializedName("user_id")
+    @SerializedName("userId")
     private String userId;
 
-    @SerializedName("first_name")
+    @SerializedName("firstName")
     private String firstName;
 
-    @SerializedName("last_name")
+    @SerializedName("lastName")
     private String lastName;
 
-    @SerializedName("id_card_number")
+    @SerializedName("idCardNumber")
     private String idCardNumber;
 
-    @SerializedName("phone_number")
+    @SerializedName("phoneNumber")
     private String phoneNumber;
 
     @SerializedName("email")
@@ -39,13 +39,13 @@ public class User {
     @SerializedName("pin")
     private String pin;
 
-    @SerializedName("profile_photo")
+    @SerializedName("profilePhoto")
     private String profilePhoto;
 
-    @SerializedName("id_card_photo")
+    @SerializedName("idCardPhoto")
     private String idCardPhoto;
 
-    @SerializedName("user_with_id_card_photo")
+    @SerializedName("userWithIdCardPhoto")
     private String userWithIdCardPhoto;
 
     @SerializedName("rooms")

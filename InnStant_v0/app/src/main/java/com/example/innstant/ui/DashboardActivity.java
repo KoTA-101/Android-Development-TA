@@ -25,10 +25,12 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.R;
+import com.example.innstant.data.model.Room;
 import com.example.innstant.data.model.Transaction;
 import com.example.innstant.data.model.User;
 import com.example.innstant.ui.Dashboard.DashboardMessageActivity;
 import com.example.innstant.ui.Dashboard.DashboardNotificationActivity;
+import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
 import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
 import com.example.innstant.ui.Rent.RentRoomActivity;
 import com.example.innstant.viewmodel.DashboardViewModel;
@@ -61,6 +63,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+    String id ;
+    ArrayList<User> user = new ArrayList<>();
     private DashboardViewModel mViewModel;
 
     @Override
@@ -74,18 +78,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
         setSupportActionBar(toolbar);
-        //testAPI();
+
     }
-/*
-    private void testAPI() {
-        mViewModel.openServerConnection();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/users";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                response -> Toast.makeText(DashboardActivity.this, "Users: " + response, Toast.LENGTH_LONG).show(),
-                error -> Toast.makeText(DashboardActivity.this, error.getMessage(), Toast.LENGTH_LONG).show());
-        queue.add(stringRequest);
-    }*/
+
 
     @Override
     public void onBackPressed() {
@@ -149,31 +144,85 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     @OnClick({R.id.rent, R.id.hosting})
     public void onViewClicked(View view) {
-        Intent intent;
-        Bundle bundle = getIntent().getExtras();
+       Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("email");
+        GetDataUser(json, view);
 
-        if(json.equals("dasukirohmat@gmail.com")){
-            json = "5d1df999c6036b3087987f03";
-        }else if(json.equals("rohmat661@gmail.com")){
-            json = "5d359d3cc6036b3cd30785b8";
-        }
-
-        switch (view.getId()) {
-            case R.id.rent:
-
-                intent = new Intent(DashboardActivity.this, RentRoomActivity.class);
-//                Toast.makeText(DashboardActivity.this,json,Toast.LENGTH_LONG).show();
-                intent.putExtra("email",json);
-                startActivity(intent);
-                break;
-            case R.id.hosting:
-                intent = new Intent(DashboardActivity.this, RoomHostingActivity.class);
-                intent.putExtra("email",json);
-                Toast.makeText(DashboardActivity.this,json,Toast.LENGTH_LONG).show();
-                startActivity(intent);
-                break;
-        }
     }
+
+    public void GetDataUser(String email, View view) {
+        mViewModel.openServerConnection();
+        RequestQueue requstQueue = Volley.newRequestQueue(this);
+        String url = PreferenceHelper.getBaseUrl() + "/users";
+        JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    User users = new User();
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+//                        Toast.makeText(DashboardActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+                        Log.d("respon",response.toString());
+                        JSONObject jsonObject = new JSONObject();
+                        for (int i = 0; i < response.length(); i++) {
+
+                            try {
+                                jsonObject = response.getJSONObject(i);
+
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            users = new Gson().fromJson(String.valueOf(jsonObject), User.class);
+                            if(users.getEmail().equals(email)){
+                                id = users.getUserId();
+     //                           Toast.makeText(DashboardActivity.this,id + " ------====="+users.getEmail()+users.getUserId()+email,Toast.LENGTH_LONG).show();
+                            }
+
+                            Intent intent;
+                            switch (view.getId()) {
+                                case R.id.rent:
+                                    intent = new Intent(DashboardActivity.this, RentRoomActivity.class);
+                                    Toast.makeText(DashboardActivity.this,id,Toast.LENGTH_LONG).show();
+                                     intent.putExtra("email",id);
+                                     startActivity(intent);
+                                    break;
+                                case R.id.hosting:
+                                    intent = new Intent(DashboardActivity.this, RoomHostingActivity.class);
+                                    intent.putExtra("email",id);
+                                    Toast.makeText(DashboardActivity.this,id,Toast.LENGTH_LONG).show();
+                                    startActivity(intent);
+                                    break;
+                            }
+
+
+                        }
+
+
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DashboardActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+        ) {
+            //here I want to post data to sever
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+//                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+                return headers;
+            }
+        };
+        requstQueue.add(jsonobj);
+    }
+
 
 }

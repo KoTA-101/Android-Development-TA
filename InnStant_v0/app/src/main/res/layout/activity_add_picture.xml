@@ -25,13 +25,15 @@
            android:columnCount="2"
            android:layout_gravity="center">
            <TextView
+               android:id="@+id/textGambar1"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="gambar "/>
+               android:text="gambar1 "/>
            <TextView
+               android:id="@+id/textGambar2"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="gambar "/>
+               android:text="gambar2 "/>
            <ImageView
                android:id="@+id/gambar1"
                android:layout_width="200dp"
@@ -43,13 +45,15 @@
                android:layout_height="200dp"
                android:src="@drawable/ic_menu_camera"/>
            <TextView
+               android:id="@+id/textGambar3"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="gambar "/>
+               android:text="gambar 3"/>
            <TextView
+               android:id="@+id/textGambar4"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="gambar "/>
+               android:text="gambar 4"/>
            <ImageView
                android:id="@+id/gambar3"
            android:layout_width="200dp"
@@ -61,13 +65,15 @@
                android:layout_height="200dp"
                android:src="@drawable/ic_menu_camera"/>
            <TextView
+               android:id="@+id/textGambar5"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="gambar "/>
+               android:text="gambar 5"/>
            <TextView
+               android:id="@+id/textGambar6"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="gambar "/>
+               android:text="gambar 6"/>
            <ImageView
                android:id="@+id/gambar5"
                android:layout_width="200dp"

@@ -104,12 +104,9 @@ public class RentRoomActivity extends AppCompatActivity
         String url = PreferenceHelper.getBaseUrl() + "/transactions";
         list = new ArrayList<>();
 
-
-        Type listType = new TypeToken<List<String>>() {}.getType();
-
         JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
-                    Transaction room = new Transaction();
+                    Transaction transaksi = new Transaction();
                     @Override
                     public void onResponse(JSONArray response) {
                         //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
@@ -117,8 +114,8 @@ public class RentRoomActivity extends AppCompatActivity
 
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                room = new Gson().fromJson(String.valueOf(jsonObject), Transaction.class);
-                                list.add(room);
+                                    transaksi = new Gson().fromJson(String.valueOf(jsonObject), Transaction.class);
+                                    list.add(transaksi);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -69,9 +69,9 @@ public class AdapterRoomRent extends RecyclerView.Adapter<AdapterRoomRent.MyView
             hosID.setText(item.getHostId());
             guessID.setText(item.getGuestId());
             roomID.setText(item.getRoomId());
-            transaksiTimestamp.setText((CharSequence) item.getTransactionTimestamp());
-            bookStart.setText((CharSequence) item.getBookStartDate());
-            bookEnd.setText((CharSequence) item.getBookEndDate());
+            transaksiTimestamp.setText(item.getTransactionTimestamp().toString());
+            bookStart.setText(String.valueOf(item.getBookStartDate()));
+            bookEnd.setText(String.valueOf(item.getBookEndDate()));
             statusPembayaran.setText(item.getPaymentStatus());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
