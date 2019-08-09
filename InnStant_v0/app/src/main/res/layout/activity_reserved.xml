@@ -12,10 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:text="Not being rented yet."
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -40,12 +36,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <Button
+                        android:id="@+id/chat"
                         android:textColor="#fff"
                         android:background="@color/colorPrimary"
                         android:text="Chat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:layout_marginRight="20dp"/>
                     <Button
+                        android:id="@+id/view"
                         android:textColor="#fff"
                         android:background="@color/colorPrimary"
                         android:text="View Profile >"
@@ -117,53 +115,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Room Schedule this month : " />
-            <Button
-                android:layout_marginLeft="50dp"
-                android:textColor="#fff"
-                android:background="@color/colorPrimary"
+                android:text="Room Schedule this month : "/>
+            <TextView
+                android:id="@+id/countingDuration"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="View All"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <CalendarView
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"></CalendarView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="bottom"
                 android:orientation="vertical">
                 <Button
+                    android:id="@+id/checkin"
                     android:layout_marginTop="20dp"
                     android:textColor="#fff"
                     android:background="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Edit "/>
-                <TextView
+                    android:text="Check-in "/>
+
+                <Button
+                    android:id="@+id/checkout"
                     android:layout_marginTop="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="#D6D6D6"/>
-                <TextView
-                    android:textStyle="bold"
-                    android:text="Available"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#D6D6D6"/>
-                <TextView
-                    android:layout_marginTop="50dp"
+                    android:background="#707070"
+                    android:textColor="#fff"
+                    android:text="Check-Out "/>
+                <Button
+                    android:id="@+id/back"
+                    android:layout_marginTop="150dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="#707070"/>
+                    android:background="#707070"
+                    android:textColor="#fff"
+                    android:text="Back"/>
                 <TextView
                     android:textStyle="bold"
                     android:text="Booked"

@@ -19,16 +19,22 @@ public class Transaction {
     private String transactionId;
     @SerializedName("hostId")
     private String hostId;
+    @SerializedName("hostName")
+    private  String hostName;
     @SerializedName("guestId")
     private String guestId;
+    @SerializedName("guestName")
+    private  String guestName;
     @SerializedName("roomId")
     private String roomId;
+    @SerializedName("roomName")
+    private  String roomName;
     @SerializedName("transactionTimestamp")
     private Date transactionTimestamp;
     @SerializedName("bookStartDate")
-    private Date bookStartDate;
+    private String bookStartDate;
     @SerializedName("bookEndDate")
-    private Date bookEndDate;
+    private String bookEndDate;
     @SerializedName("paymentStatus")
     private String paymentStatus;
     @SerializedName("isBookingCanceled")

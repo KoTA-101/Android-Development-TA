@@ -62,7 +62,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
+    String json;
     String id ;
     ArrayList<User> user = new ArrayList<>();
     private DashboardViewModel mViewModel;
@@ -71,6 +71,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bundle bundle = getIntent().getExtras();
+        json = bundle.getString("email");
+        Toast.makeText(DashboardActivity.this,json,Toast.LENGTH_LONG).show();
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -144,9 +147,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     @OnClick({R.id.rent, R.id.hosting})
     public void onViewClicked(View view) {
-       Bundle bundle = getIntent().getExtras();
-        String json = bundle.getString("email");
-        GetDataUser(json, view);
+
+       GetDataUser(json, view);
 
     }
 
@@ -177,6 +179,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                             if(users.getEmail().equals(email)){
                                 id = users.getUserId();
      //                           Toast.makeText(DashboardActivity.this,id + " ------====="+users.getEmail()+users.getUserId()+email,Toast.LENGTH_LONG).show();
+                            }else if (users.getUserId().equals(email)){
+                                id =email;
                             }
 
                             Intent intent;

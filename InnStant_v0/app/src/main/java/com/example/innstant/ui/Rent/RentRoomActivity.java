@@ -2,6 +2,7 @@ package com.example.innstant.ui.Rent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +68,8 @@ public class RentRoomActivity extends AppCompatActivity
         setContentView(R.layout.activity_rent_room);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -84,12 +90,11 @@ public class RentRoomActivity extends AppCompatActivity
         mViewModel = ViewModelProviders.of(this).get(ListerRoomVewModel.class);
 
 
-        GetData();
+        GetData(json);
         rent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = getIntent().getExtras();
-                String json = bundle.getString("email");
+
                 Intent intent = new Intent(RentRoomActivity.this, ListedRoomActivity.class);
                 intent.putExtra("email",json);
                 startActivity(intent);
@@ -98,7 +103,7 @@ public class RentRoomActivity extends AppCompatActivity
     }
 
 
-    public void  GetData()  {
+    public void  GetData(String json)  {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
         String url = PreferenceHelper.getBaseUrl() + "/transactions";
@@ -107,19 +112,25 @@ public class RentRoomActivity extends AppCompatActivity
         JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
                     Transaction transaksi = new Transaction();
+                    JSONObject jsonObject;
                     @Override
                     public void onResponse(JSONArray response) {
                         //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
                         for (int i = 0; i < response.length(); i++) {
 
                             try {
-                                JSONObject jsonObject = response.getJSONObject(i);
-                                    transaksi = new Gson().fromJson(String.valueOf(jsonObject), Transaction.class);
-                                    list.add(transaksi);
+                                 jsonObject = response.getJSONObject(i);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            transaksi = new Gson().fromJson(String.valueOf(jsonObject), Transaction.class);
+//                            Log.d("TIME",String.valueOf( dateFormat.format(date)));
+                            if(transaksi.getGuestId().equals(json)){
+                                list.add(transaksi);
+                            }
                         }
+
                         adapter = new AdapterRoomRent(RentRoomActivity.this,list,  RentRoomActivity.this);
                         recyclerView.setAdapter(adapter);
                     }
@@ -208,6 +219,14 @@ public class RentRoomActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(Transaction item) {
-
+        String status = "check";
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
+        Intent intent = new Intent(RentRoomActivity.this,ApprovalActivity.class);
+        String data = new Gson().toJson(item);
+        intent.putExtra("email",json);
+        intent.putExtra("dataTransaksi",data);
+        intent.putExtra("status",status);
+        startActivity(intent);
     }
 }

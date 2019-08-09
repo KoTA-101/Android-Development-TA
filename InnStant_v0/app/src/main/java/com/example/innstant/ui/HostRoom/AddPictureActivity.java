@@ -3,6 +3,7 @@ package com.example.innstant.ui.HostRoom;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -55,6 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import retrofit2.http.POST;
 
 public class AddPictureActivity extends AppCompatActivity {
     private AddPictureViewModel mViewModel;
@@ -83,27 +85,27 @@ public class AddPictureActivity extends AppCompatActivity {
         String json = bundle.getString("dataRoom");
         String json1 = bundle.getString("email");
         Gson gson = new Gson();
-        final Room room= gson.fromJson(json,Room.class);
+        final Room room = gson.fromJson(json, Room.class);
 
 
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(AddPictureActivity.this).get(AddPictureViewModel.class);
 
-//        Toast.makeText(AddPictureActivity.this,room.getName(),Toast.LENGTH_LONG).show();
+//
 
         nextPict = (Button) findViewById(R.id.nextsetpricing);
-        gambar1 =(ImageView) findViewById(R.id.gambar1);
-        gambar2 =(ImageView) findViewById(R.id.gambar2);
-        gambar3 =(ImageView) findViewById(R.id.gambar3);
-        gambar4 =(ImageView) findViewById(R.id.gambar4);
-        gambar5 =(ImageView) findViewById(R.id.gambar5);
-        gambar6 =(ImageView) findViewById(R.id.gambar6);
+        gambar1 = (ImageView) findViewById(R.id.gambar1);
+        gambar2 = (ImageView) findViewById(R.id.gambar2);
+        gambar3 = (ImageView) findViewById(R.id.gambar3);
+        gambar4 = (ImageView) findViewById(R.id.gambar4);
+        gambar5 = (ImageView) findViewById(R.id.gambar5);
+        gambar6 = (ImageView) findViewById(R.id.gambar6);
         textGambar1 = (TextView) findViewById(R.id.textGambar1);
-        textGambar2=(TextView) findViewById(R.id.textGambar2);
-        textGambar3=(TextView) findViewById(R.id.textGambar3);
-        textGambar4=(TextView) findViewById(R.id.textGambar4);
-        textGambar5=(TextView) findViewById(R.id.textGambar5);
-        textGambar6=(TextView) findViewById(R.id.textGambar6);
+        textGambar2 = (TextView) findViewById(R.id.textGambar2);
+        textGambar3 = (TextView) findViewById(R.id.textGambar3);
+        textGambar4 = (TextView) findViewById(R.id.textGambar4);
+        textGambar5 = (TextView) findViewById(R.id.textGambar5);
+        textGambar6 = (TextView) findViewById(R.id.textGambar6);
         gambar1.setOnClickListener(new gambar1());
         gambar2.setOnClickListener(new gambar2());
         gambar3.setOnClickListener(new gambar3());
@@ -114,11 +116,11 @@ public class AddPictureActivity extends AppCompatActivity {
         nextPict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(AddPictureActivity.this, SetRoomPricingActivity.class);
-                Gson gson= new Gson();
+                Intent intent = new Intent(AddPictureActivity.this, SetRoomPricingActivity.class);
+                Gson gson = new Gson();
                 String json = gson.toJson(room);
-                intent.putExtra("dataRoom",json);
-                intent.putExtra("email",json1);
+                intent.putExtra("dataRoom", json);
+                intent.putExtra("email", json1);
                 startActivity(intent);
             }
         });
@@ -129,72 +131,79 @@ public class AddPictureActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent,1);
+            startActivityForResult(intent, 1);
         }
     }
+
     class gambar2 implements Button.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent,2);
+            startActivityForResult(intent, 2);
         }
     }
+
     class gambar3 implements Button.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent,3);
+            startActivityForResult(intent, 3);
         }
     }
+
     class gambar4 implements Button.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent,4);
+            startActivityForResult(intent, 4);
         }
     }
+
     class gambar5 implements Button.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent,5);
+            startActivityForResult(intent, 5);
         }
     }
+
     class gambar6 implements Button.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent,6);
+            startActivityForResult(intent, 6);
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1){
+        if (requestCode == 1) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             gambar1.setImageBitmap(bitmap);
-            GetData(bitmap);
-        }else if(requestCode == 2){
+
+            GetData(gambar1.getDrawable());
+        } else if (requestCode == 2) {
 
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             gambar2.setImageBitmap(bitmap);
-        }else if(requestCode == 3){
+        } else if (requestCode == 3) {
 
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             gambar3.setImageBitmap(bitmap);
 
-        }else if(requestCode == 4){
+        } else if (requestCode == 4) {
 
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             gambar4.setImageBitmap(bitmap);
 
-        }else if(requestCode == 5){
+        } else if (requestCode == 5) {
 
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             gambar5.setImageBitmap(bitmap);
 
-        }else if(requestCode == 6){
+        } else if (requestCode == 6) {
 
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             gambar6.setImageBitmap(bitmap);
@@ -202,46 +211,16 @@ public class AddPictureActivity extends AppCompatActivity {
         }
     }
 
-    public void GetData(Bitmap bitmap){
+    public void GetData(Drawable bitmap) {
         mViewModel.openServerConnection();
-        RequestQueue requstQueue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/photos/upload_photo";
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Map<String, Object> params = new HashMap<>();
-        params.put("file", bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream));
-        params.put("save_directory", "Room");
-        JSONObject param = new JSONObject(params);
-        JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.POST, url,param,
-                new Response.Listener<JSONObject>() {
+//        private MultipartEntity entity = new MultipartEntity();
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(AddPictureActivity.this,response.toString(),Toast.LENGTH_LONG).show();
-                        Log.d("RESPONBRO",response.toString());
+        final String FILE_PART_NAME = "file";
+//        private static final String STRING_PART_NAME = "text";
 
+        final Response.Listener<String> mListener;
+        final File mFilePart;
+        final String mStringPart;
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AddPictureActivity.this, "gagal  Edit   :" + error.toString(), Toast.LENGTH_LONG).show();
-                        Log.d("RESPONBRO",error.toString());
-
-                    }
-
-                }
-
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Accept","application/json");
-                headers.put("Content-Type","application/json");
-                return headers;
-            }
-        };
-        requstQueue.add(jsonobj);
     }
-
 }

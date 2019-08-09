@@ -1,10 +1,12 @@
 package com.example.innstant.ui.Rent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,17 +14,38 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
+import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
 import com.example.innstant.data.model.Transaction;
+import com.example.innstant.data.model.User;
+import com.example.innstant.viewmodel.ApprovalViewModel;
+import com.example.innstant.viewmodel.DashboardViewModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
+import butterknife.ButterKnife;
 
 public class SelectDateActivity extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
@@ -33,6 +56,9 @@ public class SelectDateActivity extends AppCompatActivity {
     Button requestBook;
     Bundle bundle;
     String json,json1;
+
+    private ApprovalViewModel mViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +73,10 @@ public class SelectDateActivity extends AppCompatActivity {
          bundle = getIntent().getExtras();
          json = bundle.getString("data");
          json1 = bundle.getString("email");
+
+        ButterKnife.bind(this);
+        mViewModel = ViewModelProviders.of(this).get(ApprovalViewModel.class);
+
 
         Room room= gson.fromJson(json,Room.class);
 
@@ -74,7 +104,7 @@ public class SelectDateActivity extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
 
                     awal.setText(sdf.format(myCalendar.getTime()));
-                    transaksi.setBookStartDate(myCalendar.getTime());
+                    transaksi.setBookStartDate(myCalendar.getTime().toString());
                   }
 
             };
@@ -107,7 +137,7 @@ public class SelectDateActivity extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                     akhir.setText(sdf.format(myCalendar.getTime()));
-                    transaksi.setBookEndDate(myCalendar.getTime());
+                    transaksi.setBookEndDate(myCalendar.getTime().toString());
 
                 }
 
@@ -125,15 +155,107 @@ public class SelectDateActivity extends AppCompatActivity {
         requestBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String paramString = gson.toJson(transaksi);
-                Intent intent = new Intent(SelectDateActivity.this,ApprovalActivity.class);
-                intent.putExtra("email",json1);
-                intent.putExtra("data",json);
-                intent.putExtra("dataTransaksi",paramString);
-                Toast.makeText(SelectDateActivity.this,"TEST   "+json1,Toast.LENGTH_LONG).show();
-                startActivity(intent);
+                postData(transaksi,json1,room);
             }
         });
+    }
+
+    public void postData(Transaction transaksi, String json, Room room) {
+        mViewModel.openServerConnection();
+        RequestQueue requstQueue = Volley.newRequestQueue(this);
+        String url = PreferenceHelper.getBaseUrl() + "/transactions";
+        String urlUser = PreferenceHelper.getBaseUrl() + "/users";
+        transaksi.setRoomId(room.getRoomId());
+        transaksi.setRoomName(room.getName());
+        transaksi.setHostId(room.getOwnerId());
+        transaksi.setGuestId(json);
+//        Toast.makeText(ApprovalActivity.this, json+"   :" + transaksi.toString(), Toast.LENGTH_LONG).show();
+        String paramString = new GsonBuilder().create().toJson(transaksi);
+        try {
+            JSONObject param = new JSONObject(paramString);
+            JsonArrayRequest jsonUser= new JsonArrayRequest(Request.Method.GET, urlUser, null,
+                        new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            JSONObject jsonObject = new JSONObject();
+                            User dataUser;
+                            String userGuest = null,userHost;
+                          //  Toast.makeText(SelectDateActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+
+                            for (int i = 0; i < response.length(); i++) {
+
+                                try {
+                                    jsonObject = response.getJSONObject(i);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                dataUser = new Gson().fromJson(String.valueOf(jsonObject), User.class);
+//                            Log.d("TIME",String.valueOf( dateFormat.format(date)));
+                                if(dataUser.getUserId().equals(json)){
+                                    userGuest = dataUser.getFirstName();
+                                    transaksi.setGuestName(userGuest);
+                                 }
+                                if(dataUser.getUserId().equals(transaksi.getHostId())){
+                                    userHost = dataUser.getFirstName();
+                                    transaksi.setHostName(userHost);
+                                    Log.d("IDUSER",userGuest+userHost);
+                                }
+
+                            }
+                          //  Toast.makeText(SelectDateActivity.this, json+"   :" + transaksi.getGuestName()+transaksi.getHostName(), Toast.LENGTH_LONG).show();
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                }
+            }){
+
+            };
+            requstQueue.add(jsonUser);
+
+//            JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.POST, url, param,
+//                    new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Toast.makeText(SelectDateActivity.this,"berhasil    :"+response.toString(),Toast.LENGTH_LONG).show();
+//
+//                        }
+//
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            Toast.makeText(SelectDateActivity.this,"gagal     :"+error.toString(),Toast.LENGTH_LONG).show();
+//                        }
+//
+//                    }
+//
+//            ) {
+//                //here I want to post data to sever
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    Map<String, String> headers = new HashMap<>();
+//                    // Basic Authentication
+//                    //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+////                    headers.put("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InJvaG1hdDY2MUBnbWFpbC5jb20iLCJleHAiOjE1NjI2NjM1NjksInJvbGUiOlsiVVNFUiJdfQ.6mGlnlu0lWHuOZLmy_I4IYOD5BJKc-22fbR0sWO-8j_KQ9Jkk4owJZqpP3yPtvBIiRhD_zRYKm-ew3DPqFrK_A");
+//                    return headers;
+//                }
+//            };
+//            requstQueue.add(jsonobj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String status = "pesan";
+        Intent intent = new Intent(SelectDateActivity.this,ApprovalActivity.class);
+        intent.putExtra("email",json1);
+        intent.putExtra("data",json);
+        intent.putExtra("dataTransaksi",paramString);
+        intent.putExtra("status",status);
+        Toast.makeText(SelectDateActivity.this,"TEST   "+transaksi.toString(),Toast.LENGTH_LONG).show();
+        // startActivity(intent);
     }
 }
