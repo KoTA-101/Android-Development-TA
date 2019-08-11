@@ -33,7 +33,6 @@ import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
 import com.example.innstant.ui.RoomListed.EditRoomActivity;
 import com.example.innstant.viewmodel.ListerRoomVewModel;
 import com.google.android.material.navigation.NavigationView;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -83,8 +82,9 @@ public class RoomHostingActivity extends AppCompatActivity
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
+        Toast.makeText(RoomHostingActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
         navView.setNavigationItemSelectedListener(this);
         recyclerView = findViewById(R.id.dataroom);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

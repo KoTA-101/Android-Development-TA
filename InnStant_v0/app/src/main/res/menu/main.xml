@@ -2,17 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/message"
-        android:icon="@mipmap/message"
-        android:title="Message"
-        app:showAsAction="ifRoom"
-        />
+
     <item
         android:id="@+id/notify"
         android:icon="@mipmap/notifications"
         android:title="Notify"
         app:showAsAction="ifRoom"
       />
+    <item
+        android:id="@+id/logout"
+        android:icon="@mipmap/logout"
+        android:title="Message"
+        app:showAsAction="ifRoom"
+        />
 
 </menu>

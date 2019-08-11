@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.innstant.R;
 import com.example.innstant.data.model.Room;
 import com.example.innstant.ui.RentStatus.idleActivity;
-import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;

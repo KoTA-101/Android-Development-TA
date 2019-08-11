@@ -67,12 +67,11 @@ public class EditRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_room);
+        mViewModel = ViewModelProviders.of(this).get(EditRoomViewModel.class);
         Bundle bundle = getIntent().getExtras();
         String id = bundle.getString("email");
         String kamar = bundle.getString("id");
-        ButterKnife.bind(this);
-        mViewModel = ViewModelProviders.of(this).get(EditRoomViewModel.class);
-
+        Toast.makeText(EditRoomActivity.this,id.toString(),Toast.LENGTH_LONG).show();
         save =(Button) findViewById(R.id.SaveEdit);
         cancel = (Button) findViewById(R.id.Cancel);
         delete =(Button) findViewById(R.id.Delete);
@@ -88,6 +87,7 @@ public class EditRoomActivity extends AppCompatActivity {
         acfan = (CheckBox) findViewById(R.id.acorfan);
         parking= (CheckBox) findViewById(R.id.parking);
         security=(CheckBox) findViewById(R.id.security);
+
         GetData(room,location,roomType,roomName,desc,fee,downPayment,shower,food,wifi,acfan,parking,security,kamar);
 
 
@@ -106,6 +106,8 @@ public class EditRoomActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
+                String id = bundle.getString("email");
+                intent.putExtra("email", id);
                 startActivity(intent);
             }
         });
@@ -144,7 +146,7 @@ public class EditRoomActivity extends AppCompatActivity {
                             room1 = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
 
                         amenis = room1.getAmenities();
-                        acfan.setChecked(false);
+                         acfan.setChecked(false);
                          shower.setChecked(false);
                          wifi.setChecked(false);
                          food.setChecked(false);
@@ -152,7 +154,9 @@ public class EditRoomActivity extends AppCompatActivity {
                          security.setChecked(false);
                         //setAllData
                         for(int x = 0 ; x<amenis.size();x++){
-                            if(amenis.get(x).equals("Ac/Fan")){
+                            if (amenis.get(x).equals("")){
+
+                            }else if(amenis.get(x).equals("Ac/Fan")){
                                  acfan.setChecked(true);
                             }else if( amenis.get(x).equals("Shower")){
                                  shower.setChecked(true);
@@ -194,38 +198,41 @@ public class EditRoomActivity extends AppCompatActivity {
     public void postEditData(Room room, EditText location, EditText roomType, EditText roomName, EditText desc, EditText fee, EditText downPayment, CheckBox shower, CheckBox food, CheckBox wifi, CheckBox acfan, CheckBox parking, CheckBox security){
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/users/"+room.getOwnerId()+"/rooms/"+room.getRoomId();
+        Bundle bundle = getIntent().getExtras();
+        String id = bundle.getString("email");
+        String kamar = bundle.getString("id");
+        String url = PreferenceHelper.getBaseUrl() + "/users/"+id+"/rooms/"+kamar;
         ArrayList<String> ameni = new ArrayList<String>();
         //setAmenities
         if(acfan.isChecked()){
             AcFanText ="Ac/Fan";
         }else{
-            AcFanText=null;
+            AcFanText="";
         }
         if(shower.isChecked()){
             showerText="Shower";
         }else{
-            showerText=null;
+            showerText="";
         }
         if(wifi.isChecked()){
             wifiText="Wifi";
         }else{
-            wifiText=null;
+            wifiText="";
         }
         if(food.isChecked()){
             foodText ="Food";
         }else{
-            foodText =null;
+            foodText ="";
         }
         if(parking.isChecked()){
             parkingText="Parking";
         }else{
-            parkingText=null;
+            parkingText="";
         }
         if(security.isChecked()){
             securityText ="Security";
         }else{
-            securityText=null;
+            securityText="";
         }
 
         ameni.add(showerText);
@@ -277,6 +284,10 @@ public class EditRoomActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
+        intent.putExtra("email", id);
+        startActivity(intent);
+        finish();
 
     }
     public void DeleteRoom(String userId , String roomId){
@@ -292,7 +303,11 @@ public class EditRoomActivity extends AppCompatActivity {
                         Toast.makeText(EditRoomActivity.this,"delete berhasil    :"+response,Toast.LENGTH_LONG).show();
 //                        Log.d("respon",response.toString());
                         Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
+                        Bundle bundle = getIntent().getExtras();
+                        String id = bundle.getString("email");
+                        intent.putExtra("email", id);
                         startActivity(intent);
+                        finish();
 
                     }
 

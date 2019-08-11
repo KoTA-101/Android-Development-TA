@@ -20,7 +20,7 @@
                 android:id="@+id/pictureReserved"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:src="@drawable/btn_current_location"/>
+                android:src="@drawable/ic_launcher_background"/>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"

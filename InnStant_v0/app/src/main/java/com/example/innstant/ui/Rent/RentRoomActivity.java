@@ -36,7 +36,6 @@ import com.example.innstant.ui.RoomListed.Adapter.adapterListedRoom;
 import com.example.innstant.ui.RoomListed.ListedRoomActivity;
 import com.example.innstant.viewmodel.ListerRoomVewModel;
 import com.google.android.material.navigation.NavigationView;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -70,7 +69,7 @@ public class RentRoomActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("email");
-
+        Toast.makeText(RentRoomActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -115,7 +114,7 @@ public class RentRoomActivity extends AppCompatActivity
                     JSONObject jsonObject;
                     @Override
                     public void onResponse(JSONArray response) {
-                        //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+
                         for (int i = 0; i < response.length(); i++) {
 
                             try {

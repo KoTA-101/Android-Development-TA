@@ -12,10 +12,6 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.innstant.R;
 import com.example.innstant.ui.HostRoom.GeneralDescriptionActivity;
-import com.tomtom.online.sdk.map.MapFragment;
-import com.tomtom.online.sdk.map.OnMapReadyCallback;
-import com.tomtom.online.sdk.map.TomtomMap;
-import com.tomtom.online.sdk.map.model.MapTilesType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,17 +28,15 @@ public class SetLocationActivity extends FragmentActivity {
     @BindView(R.id.nextinput)
     Button nextinput;
 
-    private TomtomMap tomtomMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_location);
         ButterKnife.bind(this);
-        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
-        if (mapFragment != null) {
-            mapFragment.getAsyncMap(onMapReadyCallback);
-        }
+//        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+//        if (mapFragment != null) {
+//            mapFragment.getAsyncMap(onMapReadyCallback);
+//        }
 
 
     }
@@ -50,18 +44,18 @@ public class SetLocationActivity extends FragmentActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        tomtomMap.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+//        tomtomMap.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-    private final OnMapReadyCallback onMapReadyCallback =
-            new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(TomtomMap map) {
-                    //Map is ready here
-                    tomtomMap = map;
-                    tomtomMap.getUiSettings().setMapTilesType(MapTilesType.VECTOR);
-                    tomtomMap.setMyLocationEnabled(true);
-                }
+//
+//    private final OnMapReadyCallback onMapReadyCallback =
+//            new OnMapReadyCallback() {
+//                @Override
+//                public void onMapReady(TomtomMap map) {
+//                    //Map is ready here
+//                    tomtomMap = map;
+//                    tomtomMap.getUiSettings().setMapTilesType(MapTilesType.VECTOR);
+//                    tomtomMap.setMyLocationEnabled(true);
+
             };
 
     @OnClick({R.id.setloc, R.id.nextinput})
@@ -70,6 +64,7 @@ public class SetLocationActivity extends FragmentActivity {
         String json = bundle.getString("email");
         switch (view.getId()) {
             case R.id.setloc:
+                location.setText("ds. Cinunuk , kec. Wanaraja, kab. Garut , Jawa Barat");
                 break;
             case R.id.nextinput:
                 Intent intent = new Intent(SetLocationActivity.this, GeneralDescriptionActivity.class);

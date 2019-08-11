@@ -1,6 +1,19 @@
+package com.example.innstant.ui.HostRoom;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyLog;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 public class MultipartRequest extends Request<String> {
 
-    private MultipartEntity entity = new MultipartEntity();
+//    private MultipartEntity entity = new MultipartEntity();
 
     private static final String FILE_PART_NAME = "file";
     private static final String STRING_PART_NAME = "text";
@@ -21,35 +34,36 @@ public class MultipartRequest extends Request<String> {
 
     private void buildMultipartEntity()
     {
-        entity.addPart(FILE_PART_NAME, new FileBody(mFilePart));
-        try
-        {
-            entity.addPart(STRING_PART_NAME, new StringBody(mStringPart));
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            VolleyLog.e("UnsupportedEncodingException");
-        }
+//        entity.addPart(FILE_PART_NAME, new FileBody(mFilePart));
+//        try
+//        {
+//            entity.addPart(STRING_PART_NAME, new StringBody(mStringPart));
+//        }
+//        catch (UnsupportedEncodingException e)
+//        {
+//            VolleyLog.e("UnsupportedEncodingException");
+//        }
     }
 
     @Override
     public String getBodyContentType()
     {
-        return entity.getContentType().getValue();
+//        return entity.getContentType().getValue();
+        return null;
     }
 
     @Override
     public byte[] getBody() throws AuthFailureError
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try
-        {
-            entity.writeTo(bos);
-        }
-        catch (IOException e)
-        {
-            VolleyLog.e("IOException writing to ByteArrayOutputStream");
-        }
+//        try
+//        {
+//            entity.writeTo(bos);
+//        }
+//        catch (IOException e)
+//        {
+//            VolleyLog.e("IOException writing to ByteArrayOutputStream");
+//        }
         return bos.toByteArray();
     }
 

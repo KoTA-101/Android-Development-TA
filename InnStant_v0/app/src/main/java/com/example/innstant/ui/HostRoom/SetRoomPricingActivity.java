@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
 import com.example.innstant.data.model.Room;
+import com.example.innstant.ui.DashboardActivity;
 import com.example.innstant.ui.RoomListed.ListedRoomActivity;
 import com.example.innstant.viewmodel.SetRoomPricingActivityViewModel;
 import com.google.gson.Gson;
@@ -57,6 +58,9 @@ public class SetRoomPricingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SetRoomPricingActivity.this, SetAvaliabilityActivity.class);
                 postData();
+                Bundle bundle = getIntent().getExtras();
+                String json1 = bundle.getString("email");
+                intent.putExtra("email",json1);
                 startActivity(intent);
             }
         });
@@ -64,9 +68,14 @@ public class SetRoomPricingActivity extends AppCompatActivity {
         saveRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 postData();
-                Intent intent = new Intent(SetRoomPricingActivity.this, ListedRoomActivity.class);
+                Intent intent = new Intent(SetRoomPricingActivity.this, DashboardActivity.class);
+                Bundle bundle = getIntent().getExtras();
+                String json1 = bundle.getString("email");
+                intent.putExtra("email",json1);
                 startActivity(intent);
+                finish();
             }
         });
 

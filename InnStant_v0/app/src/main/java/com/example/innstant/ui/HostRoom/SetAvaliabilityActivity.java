@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.innstant.R;
+import com.example.innstant.ui.DashboardActivity;
 import com.example.innstant.ui.RoomListed.ListedRoomActivity;
 
 public class SetAvaliabilityActivity extends AppCompatActivity {
@@ -20,8 +21,11 @@ public class SetAvaliabilityActivity extends AppCompatActivity {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SetAvaliabilityActivity.this, ListedRoomActivity.class);
+                Intent intent = new Intent(SetAvaliabilityActivity.this, DashboardActivity.class);
                 startActivity(intent);
+                Bundle bundle = getIntent().getExtras();
+                String json1 = bundle.getString("email");
+                intent.putExtra("email",json1);
                 finish();
             }
         });

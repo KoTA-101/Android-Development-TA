@@ -1,15 +1,16 @@
-package com.example.innstant.ui.RoomListed;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
+package com.example.innstant.ui.Dashboard.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,96 +21,83 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.innstant.R;
 import com.example.innstant.data.PreferenceHelper;
-import com.example.innstant.data.model.Room;
-import com.example.innstant.data.model._id;
-import com.example.innstant.ui.HostRoom.Adapter.AdapterRoomHosting;
-import com.example.innstant.ui.RoomListed.Adapter.adapterListedRoom;
-import com.example.innstant.viewmodel.ListerRoomVewModel;
+import com.example.innstant.data.model.Transaction;
+import com.example.innstant.ui.Rent.Adapter.AdapterRoomRent;
+import com.example.innstant.ui.Rent.ApprovalActivity;
+import com.example.innstant.ui.Rent.RentRoomActivity;
+import com.example.innstant.viewmodel.DashboardViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import butterknife.ButterKnife;
-
-import static java.util.Collections.singletonList;
-
-public class ListedRoomActivity extends AppCompatActivity implements adapterListedRoom.OnItemClickListener {
-    private ListerRoomVewModel mViewModel;
+public class NotificationActivity extends AppCompatActivity  implements AdapterRoomRent.OnItemClickListener {
+    private DashboardViewModel mViewModel;
     RecyclerView recyclerView;
-    adapterListedRoom adapter;
-    ArrayList<Room> list;
+    AdapterRoomRent adapter;
+    ArrayList<Transaction> list;
     RecyclerView.LayoutManager layoutManager;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listed_room);
+        setContentView(R.layout.activity_notification);
+        Bundle bundle = getIntent().getExtras();
+        String json = bundle.getString("email");
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
 
-        list = new ArrayList<>();
-        recyclerView = findViewById(R.id.listroom);
+
+        recyclerView = findViewById(R.id.list_transaksi);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ButterKnife.bind(this);
-        mViewModel = ViewModelProviders.of(this).get(ListerRoomVewModel.class);
-        //fetching data
-        GetData();
+        GetData(json);
     }
 
-    public ArrayList<Room> GetData()  {
+    public void  GetData(String json)  {
         mViewModel.openServerConnection();
         RequestQueue requstQueue = Volley.newRequestQueue(this);
-        String url = PreferenceHelper.getBaseUrl() + "/rooms";
-        Bundle bundle = getIntent().getExtras();
-        String json = bundle.getString("email");
-
-//        Type listType = new TypeToken<List<String>>() {}.getType();
+        String url = PreferenceHelper.getBaseUrl() + "/transactions";
+        list = new ArrayList<>();
 
         JsonArrayRequest jsonobj = new JsonArrayRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONArray>() {
+                    Transaction transaksi = new Transaction();
+                    JSONObject jsonObject;
                     @Override
                     public void onResponse(JSONArray response) {
                         //Toast.makeText(ListedRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
                         for (int i = 0; i < response.length(); i++) {
 
                             try {
-                                JSONObject jsonObject = response.getJSONObject(i);
-                                Room room =new Room();
-                                room = new Gson().fromJson(String.valueOf(jsonObject), Room.class);
-                                if(room.getOwnerId().equals(json)){
-
-                                }else{
-                                    list.add(room);
-                                }
-
-                                adapter = new adapterListedRoom(ListedRoomActivity.this,list, ListedRoomActivity.this);
-                                recyclerView.setAdapter(adapter);
+                                jsonObject = response.getJSONObject(i);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                          }
+                            transaksi = new Gson().fromJson(String.valueOf(jsonObject), Transaction.class);
+                            Log.d("TIME",String.valueOf( transaksi.toString()));
+                            if(transaksi.getHostId().equals(json)){
+                            list.add(transaksi);
                         }
+                        }
+                        Toast.makeText(NotificationActivity.this,"berhasil    :"+json.toString(),Toast.LENGTH_LONG).show();
+                        adapter = new AdapterRoomRent(NotificationActivity.this,list,NotificationActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }
 
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ListedRoomActivity.this,"gagal     :"+error.toString(),Toast.LENGTH_LONG).show();
-                      }
+                        Toast.makeText(NotificationActivity.this,"gagal     :"+error.toString(),Toast.LENGTH_LONG).show();
+                    }
 
                 }
 
@@ -125,22 +113,20 @@ public class ListedRoomActivity extends AppCompatActivity implements adapterList
             }
         };
         requstQueue.add(jsonobj);
-        return list;
     }
-
-
 
     @Override
-    public void onItemClick(Room item) {
+    public void onItemClick(Transaction item) {
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("email");
-        Gson gson = new Gson();
-        String data =gson.toJson(item);
-        Intent intent = new Intent(ListedRoomActivity.this, RoomDetailActivity.class);
+        String status = "approval";
+        Intent intent = new Intent(NotificationActivity.this, ApprovalActivity.class);
+        String data = new Gson().toJson(item);
         intent.putExtra("email",json);
-        intent.putExtra("data",data);
-        Toast.makeText(ListedRoomActivity.this,json,Toast.LENGTH_LONG).show();
+        intent.putExtra("status",status);
+        intent.putExtra("dataTransaksi",data);
         startActivity(intent);
     }
+
 
 }

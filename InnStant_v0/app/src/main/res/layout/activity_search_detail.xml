@@ -19,17 +19,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:src="@drawable/btn_zoom_in"
+                android:src="@drawable/side_nav_bar"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginRight="5dp"/>
             <ImageView
-                android:src="@drawable/arrow_down_highlighted"
+                android:src="@drawable/side_nav_bar"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginRight="5dp"/>
             <ImageView
-                android:src="@drawable/arrow_up_highlighted"
+                android:src="@drawable/side_nav_bar"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginRight="5dp"/>
