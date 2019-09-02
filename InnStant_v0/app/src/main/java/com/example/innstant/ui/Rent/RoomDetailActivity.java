@@ -57,23 +57,28 @@ public class RoomDetailActivity extends AppCompatActivity {
         List finalAmenis = amenis;
 
         for(int x=0 ; finalAmenis.size()>x  ; x++){
-            if(finalAmenis.get(x).toString().equals("Shower")){
-                showerRent.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Food")){
-                foodRent.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Wifi")){
-                wifiRent.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Ac/Fan")){
-                acfanRent.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Parking")){
-                parkingRent.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Security")){
-                securityRent.setText(finalAmenis.get(x).toString());
+            if(finalAmenis.get(x) == null){
+
+            }else{
+
+                if(finalAmenis.get(x).toString().equals("Shower")){
+                    showerRent.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Food")){
+                    foodRent.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Wifi")){
+                    wifiRent.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Ac/Fan")){
+                    acfanRent.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Parking")){
+                    parkingRent.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Security")){
+                    securityRent.setText(finalAmenis.get(x).toString());
+                }
             }
         }
 

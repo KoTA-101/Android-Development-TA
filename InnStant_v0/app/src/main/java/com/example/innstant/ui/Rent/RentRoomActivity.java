@@ -69,7 +69,7 @@ public class RentRoomActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("email");
-        Toast.makeText(RentRoomActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
+//        Toast.makeText(RentRoomActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -138,7 +138,7 @@ public class RentRoomActivity extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RentRoomActivity.this,"gagal     :"+error.toString(),Toast.LENGTH_LONG).show();
+//                        Toast.makeText(RentRoomActivity.this,"gagal     :"+error.toString(),Toast.LENGTH_LONG).show();
                     }
 
                 }

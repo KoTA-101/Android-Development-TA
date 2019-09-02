@@ -84,7 +84,7 @@ public class RoomHostingActivity extends AppCompatActivity
         toggle.syncState();
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("email");
-        Toast.makeText(RoomHostingActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
+//        Toast.makeText(RoomHostingActivity.this,"berhasil    :"+json,Toast.LENGTH_LONG).show();
         navView.setNavigationItemSelectedListener(this);
         recyclerView = findViewById(R.id.dataroom);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -208,7 +208,7 @@ public class RoomHostingActivity extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RoomHostingActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(RoomHostingActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }

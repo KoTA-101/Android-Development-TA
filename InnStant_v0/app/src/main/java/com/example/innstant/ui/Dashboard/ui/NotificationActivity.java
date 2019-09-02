@@ -87,7 +87,10 @@ public class NotificationActivity extends AppCompatActivity  implements AdapterR
                             list.add(transaksi);
                         }
                         }
-                        Toast.makeText(NotificationActivity.this,"berhasil    :"+json.toString(),Toast.LENGTH_LONG).show();
+                        if(list.size()<1){
+                            Toast.makeText(NotificationActivity.this,"TIDAK ADA NOTIFIKASI",Toast.LENGTH_LONG).show();
+                        }
+                       // Toast.makeText(NotificationActivity.this,"berhasil    :"+json.toString(),Toast.LENGTH_LONG).show();
                         adapter = new AdapterRoomRent(NotificationActivity.this,list,NotificationActivity.this);
                         recyclerView.setAdapter(adapter);
                     }

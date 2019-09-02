@@ -39,4 +39,6 @@ public class Transaction {
     private String paymentStatus;
     @SerializedName("isBookingCanceled")
     private  Boolean isBookingCanceled;
+    @SerializedName("status")
+    private Boolean status;
 }

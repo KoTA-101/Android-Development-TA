@@ -51,7 +51,7 @@ public class EditRoomActivity extends AppCompatActivity {
     EditText location,roomName,roomType,desc,fee,downPayment;
     CheckBox shower,food,wifi,acfan,parking,security;
     ArrayList<Room> tempRoom = new ArrayList<>();
-    Room room = new Room();
+
     List amenis = new ArrayList<>() ;
     private EditRoomViewModel mViewModel;
 
@@ -71,7 +71,8 @@ public class EditRoomActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         String id = bundle.getString("email");
         String kamar = bundle.getString("id");
-        Toast.makeText(EditRoomActivity.this,id.toString(),Toast.LENGTH_LONG).show();
+        Room room = new Room();
+//        Toast.makeText(EditRoomActivity.this,id.toString(),Toast.LENGTH_LONG).show();
         save =(Button) findViewById(R.id.SaveEdit);
         cancel = (Button) findViewById(R.id.Cancel);
         delete =(Button) findViewById(R.id.Delete);
@@ -154,7 +155,9 @@ public class EditRoomActivity extends AppCompatActivity {
                          security.setChecked(false);
                         //setAllData
                         for(int x = 0 ; x<amenis.size();x++){
-                            if (amenis.get(x).equals("")){
+                            if (amenis.get(x) == null) {
+
+                            }else if(amenis.get(x).equals("")){
 
                             }else if(amenis.get(x).equals("Ac/Fan")){
                                  acfan.setChecked(true);
@@ -257,14 +260,14 @@ public class EditRoomActivity extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(EditRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
+//                            Toast.makeText(EditRoomActivity.this,"berhasil    :"+response,Toast.LENGTH_LONG).show();
                         }
 
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(EditRoomActivity.this,"gagal     :"+error,Toast.LENGTH_LONG).show();
+//                            Toast.makeText(EditRoomActivity.this,"gagal     :"+error,Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -300,7 +303,7 @@ public class EditRoomActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        Toast.makeText(EditRoomActivity.this,"delete berhasil    :"+response,Toast.LENGTH_LONG).show();
+//                        Toast.makeText(EditRoomActivity.this,"delete berhasil    :"+response,Toast.LENGTH_LONG).show();
 //                        Log.d("respon",response.toString());
                         Intent intent = new Intent(EditRoomActivity.this, RoomHostingActivity.class);
                         Bundle bundle = getIntent().getExtras();
@@ -315,7 +318,7 @@ public class EditRoomActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(EditRoomActivity.this, "delete gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(EditRoomActivity.this, "delete gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }

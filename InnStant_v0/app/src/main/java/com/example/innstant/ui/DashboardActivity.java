@@ -73,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_main);
         Bundle bundle = getIntent().getExtras();
         json = bundle.getString("email");
-        Toast.makeText(DashboardActivity.this,json,Toast.LENGTH_LONG).show();
+        Toast.makeText(DashboardActivity.this,"SELAMAT DATANG : "+json,Toast.LENGTH_LONG).show();
         ButterKnife.bind(this);
         mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -197,7 +197,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DashboardActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(DashboardActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -272,7 +272,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DashboardActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(DashboardActivity.this, "gagal     :" + error.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }

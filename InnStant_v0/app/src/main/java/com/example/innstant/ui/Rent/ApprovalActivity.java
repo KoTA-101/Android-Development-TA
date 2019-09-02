@@ -123,12 +123,18 @@ public class ApprovalActivity extends AppCompatActivity {
             //
         } else if (json.equals(transaksi.getHostId())) {
             //
-            Toast.makeText(ApprovalActivity.this, "HOST", Toast.LENGTH_LONG).show();
+//            Toast.makeText(ApprovalActivity.this, "HOST", Toast.LENGTH_LONG).show();
 
             setData(transaksi);
             if(transaksi.getPaymentStatus().equals("sudahbayar")){
-                cancel.setText("Cancel");
-                Approved.setText("Back");
+                if(stat.equals("approval")){
+                    cancel.setText("Selesai Transaksi");
+                    Approved.setText("Back");
+                }else{
+                    cancel.setText("Cancel");
+                    Approved.setText("Back");
+                }
+
                 cancel.setBackgroundColor(Color.parseColor("#FF0000"));
                 Approved.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -213,7 +219,7 @@ public class ApprovalActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(ApprovalActivity.this, " Cancel Book Berhasil", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(ApprovalActivity.this, " Cancel Book Berhasil", Toast.LENGTH_LONG).show();
 
                     }
 
@@ -253,7 +259,7 @@ public class ApprovalActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(ApprovalActivity.this, " Cancel Book Berhasil", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(ApprovalActivity.this, " Cancel Book Berhasil", Toast.LENGTH_LONG).show();
 
                     }
 

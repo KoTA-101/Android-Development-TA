@@ -66,24 +66,29 @@ public class RoomDetailActivity extends AppCompatActivity {
         List finalAmenis = amenis;
 
         for(int x=0 ; finalAmenis.size()>x  ; x++){
-            if(finalAmenis.get(x).toString().equals("Shower")){
-                shower.setText(finalAmenis.get(x).toString());
+            if(finalAmenis.get(x) == null){
+
+            }else{
+                if(finalAmenis.get(x).toString().equals("Shower")){
+                    shower.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Food")){
+                    food.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Wifi")){
+                    wifi.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Ac/Fan")){
+                    acfan.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Parking")){
+                    parking.setText(finalAmenis.get(x).toString());
+                }
+                if (finalAmenis.get(x).toString().equals("Security")){
+                    security.setText(finalAmenis.get(x).toString());
+                }
             }
-            if (finalAmenis.get(x).toString().equals("Food")){
-                food.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Wifi")){
-                wifi.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Ac/Fan")){
-                acfan.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Parking")){
-                parking.setText(finalAmenis.get(x).toString());
-            }
-            if (finalAmenis.get(x).toString().equals("Security")){
-                security.setText(finalAmenis.get(x).toString());
-            }
+
         }
         viewstatus.setOnClickListener(new View.OnClickListener()    {
             @Override
